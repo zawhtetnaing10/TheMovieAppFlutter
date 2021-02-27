@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BannerSectionView(
-                mPopularMovies: mPopularMoviesList.take(8).toList(),
+                mPopularMovies: mPopularMoviesList?.take(8)?.toList() ?? [],
               ),
               SizedBox(height: MARGIN_LARGE),
               BestPopularMoviesAndSerialsSectionView(
@@ -395,7 +395,7 @@ class _BannerSectionViewState extends State<BannerSectionView> {
         ),
         SizedBox(height: MARGIN_MEDIUM_2),
         DotsIndicator(
-          dotsCount: widget.mPopularMovies.length,
+          dotsCount: widget.mPopularMovies.length ?? 1,
           position: _position,
           decorator: DotsDecorator(
             color: HOME_SCREEN_BANNER_DOTS_INACTIVE_COLOR,
