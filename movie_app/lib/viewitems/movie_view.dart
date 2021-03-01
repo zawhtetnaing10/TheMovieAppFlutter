@@ -5,7 +5,7 @@ import 'package:movie_app/resources/dimens.dart';
 import 'package:movie_app/widgets/rating_view.dart';
 
 class MovieView extends StatelessWidget {
-  final Function onTapMovie;
+  final Function(int) onTapMovie;
   final MovieVO mMovie;
 
   MovieView(this.onTapMovie, this.mMovie);
@@ -20,7 +20,7 @@ class MovieView extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              onTapMovie();
+              onTapMovie(mMovie.id);
             },
             child: Image.network(
               "$IMAGE_BASE_URL${mMovie.posterPath}",

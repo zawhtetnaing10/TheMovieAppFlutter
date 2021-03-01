@@ -1,66 +1,116 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/data/models/movie_model.dart';
+import 'package:movie_app/data/models/movie_model_impl.dart';
+import 'package:movie_app/data/vos/credit_vo.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
+import 'package:movie_app/network/api_constants.dart';
 import 'package:movie_app/resources/colors.dart';
 import 'package:movie_app/resources/dimens.dart';
 import 'package:movie_app/resources/strings.dart';
 import 'package:movie_app/widgets/actors_and_creators_section_view.dart';
+import 'package:movie_app/widgets/gradient_view.dart';
 import 'package:movie_app/widgets/rating_view.dart';
 import 'package:movie_app/widgets/title_text.dart';
 
-class MovieDetailsPage extends StatelessWidget {
-  final List<String> genreList = [
-    "Action",
-    "Adventure",
-    "Thriller",
-  ];
+class MovieDetailsPage extends StatefulWidget {
+  final int movieId;
+
+  MovieDetailsPage(this.movieId);
+
+  @override
+  _MovieDetailsPageState createState() => _MovieDetailsPageState();
+}
+
+class _MovieDetailsPageState extends State<MovieDetailsPage> {
+  MovieModel mMovieModel = MovieModelImpl();
+
+  MovieVO mMovie;
+
+  List<CreditVO> mActorsList;
+
+  List<CreditVO> mCreatorsList;
+
+  @override
+  void initState() {
+    super.initState();
+
+    mMovieModel.getMovieDetails(widget.movieId).then((movie) {
+      setState(() {
+        this.mMovie = movie;
+      });
+    });
+
+    mMovieModel.getCreditsByMovie(widget.movieId).then((creditsList) {
+      setState(() {
+        this.mActorsList =
+            creditsList.where((credit) => credit.isActor()).toList();
+        this.mCreatorsList =
+            creditsList.where((credit) => credit.isCreator()).toList();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         color: HOME_SCREEN_BACKGROUND_COLOR,
-        child: CustomScrollView(
-          slivers: [
-            MovieDetailsSliverAppBarView(
-              () => Navigator.pop(context),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: MARGIN_MEDIUM_2,
+        child: (mMovie != null)
+            ? CustomScrollView(
+                slivers: [
+                  MovieDetailsSliverAppBarView(
+                    () => Navigator.pop(context),
+                    mMovie,
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: MARGIN_MEDIUM_2,
+                          ),
+                          child: TrailerSection(mMovie),
+                        ),
+                        SizedBox(height: MARGIN_LARGE),
+                        ActorsAndCreatorsSectionView(
+                          MOVIE_DETAILS_SCREEN_ACTORS_TITLE,
+                          "",
+                          seeMoreButtonVisibility: false,
+                          mActorsList: this.mActorsList,
+                        ),
+                        SizedBox(height: MARGIN_LARGE),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: MARGIN_MEDIUM_2,
+                          ),
+                          child: AboutFilmSectionView(mMovie),
+                        ),
+                        SizedBox(height: MARGIN_LARGE),
+                        (mCreatorsList != null && mCreatorsList.isNotEmpty)
+                            ? ActorsAndCreatorsSectionView(
+                                MOVIE_DETAILS_SCREEN_CREATORS_TITLE,
+                                MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
+                                mActorsList: this.mCreatorsList,
+                              )
+                            : Container(),
+                      ],
                     ),
-                    child: TrailerSection(genreList),
-                  ),
-                  SizedBox(height: MARGIN_LARGE),
-                  ActorsAndCreatorsSectionView(
-                    MOVIE_DETAILS_SCREEN_ACTORS_TITLE,
-                    "",
-                    seeMoreButtonVisibility: false,
-                  ),
-                  SizedBox(height: MARGIN_LARGE),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MARGIN_MEDIUM_2,
-                    ),
-                    child: AboutFilmSectionView(),
-                  ),
-                  SizedBox(height: MARGIN_LARGE),
-                  ActorsAndCreatorsSectionView(
-                    MOVIE_DETAILS_SCREEN_CREATORS_TITLE,
-                    MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
-                  ),
+                  )
                 ],
+              )
+            : Center(
+                child: CircularProgressIndicator(),
               ),
-            )
-          ],
-        ),
       ),
     );
   }
 }
 
 class AboutFilmSectionView extends StatelessWidget {
+  final MovieVO mMovie;
+
+  AboutFilmSectionView(this.mMovie);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -72,35 +122,35 @@ class AboutFilmSectionView extends StatelessWidget {
         ),
         AboutFilmInfoView(
           "Original Title:",
-          "X-Men Origins Wolverine",
+          mMovie.originalTitle,
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Type:",
-          "Action, Adventure, Thriller",
+          mMovie.genres.map((genre) => genre.name).join(","),
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Production:",
-          "United Kingdom, USA",
+          mMovie.productionCountries.map((country) => country.name).join(","),
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Premiere:",
-          "8 November 2016(World)",
+          mMovie.releaseDate,
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Description:",
-          "The next morning, Yukio informs Logan that Ichirō has died. At the funeral, Yakuza gangsters attempt to kidnap Mariko, but Logan and Mariko escape together into the urban sprawl of Tokyo. Logan is shot and his wounds do not heal as quickly as they should. After fighting off more Yakuza on a bullet train, Logan and Mariko hide in a local love hotel",
+          mMovie.overview,
         ),
       ],
     );
@@ -146,20 +196,22 @@ class AboutFilmInfoView extends StatelessWidget {
 }
 
 class TrailerSection extends StatelessWidget {
-  final List<String> genreList;
+  final MovieVO mMovie;
 
-  TrailerSection(this.genreList);
+  TrailerSection(this.mMovie);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MovieTimeAndGenreView(genreList: genreList),
+        MovieTimeAndGenreView(
+          genreList: mMovie.genres.map((genre) => genre.name).toList(),
+        ),
         SizedBox(
           height: MARGIN_MEDIUM_3,
         ),
-        StoryLineView(),
+        StoryLineView(mMovie.overview),
         SizedBox(height: MARGIN_MEDIUM_2),
         Row(
           children: [
@@ -239,9 +291,9 @@ class MovieDetailsScreenButtonView extends StatelessWidget {
 }
 
 class StoryLineView extends StatelessWidget {
-  const StoryLineView({
-    Key key,
-  }) : super(key: key);
+  final String storyLine;
+
+  StoryLineView(this.storyLine);
 
   @override
   Widget build(BuildContext context) {
@@ -253,7 +305,7 @@ class StoryLineView extends StatelessWidget {
           height: MARGIN_MEDIUM,
         ),
         Text(
-          "He is located by Yukio, a mutant with the ability to foresee people's deaths, on behalf of Ichirō, now the CEO of a technology zaibatsu. Ichirō, who is dying of cancer, wants Logan to accompany Yukio to Japan so that he may repay his life debt. In Tokyo, Logan meets Ichirō's son, Shingen, and granddaughter, Mariko. There, Ichirō offers to transfer Logan's healing abilities into his own body, thus saving Ichirō's life and alleviating Logan of his near-immortality, which Logan views as a curse. Logan refuses and prepares to leave the following day. That night, Ichirō's physician Dr. Green introduces something into Logan's body, but Logan dismisses it as a dream.",
+          this.storyLine,
           style: TextStyle(
             color: Colors.white,
             fontSize: TEXT_REGULAR_2X,
@@ -274,35 +326,42 @@ class MovieTimeAndGenreView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          Icons.access_time,
-          color: PLAY_BUTTON_COLOR,
-        ),
-        SizedBox(width: MARGIN_SMALL),
-        Text(
+    return Wrap(
+      alignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      direction: Axis.horizontal,
+      children: _createMovieTimeAndGenreWidget(),
+    );
+  }
+
+  List<Widget> _createMovieTimeAndGenreWidget() {
+    List<Widget> widgets = [
+      Icon(
+        Icons.access_time,
+        color: PLAY_BUTTON_COLOR,
+      ),
+      SizedBox(width: MARGIN_SMALL),
+      Container(
+        child: Text(
           "2h 30min",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(width: MARGIN_MEDIUM),
-        Row(
-          children: genreList
-              .map(
-                (genre) => GenreChipView(genre),
-              )
-              .toList(),
-        ),
-        Spacer(),
-        Icon(
-          Icons.favorite_border,
-          color: Colors.white,
-        )
-      ],
+      ),
+      SizedBox(width: MARGIN_MEDIUM),
+    ];
+
+    widgets.addAll(genreList.map((genre) => GenreChipView(genre)).toList());
+
+    widgets.add(
+      Icon(
+        Icons.favorite_border,
+        color: Colors.white,
+      ),
     );
+    return widgets;
   }
 }
 
@@ -314,6 +373,7 @@ class GenreChipView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Chip(
           backgroundColor: MOVIE_DETAILS_SCREEN_CHIP_BACKGROUND_COLOR,
@@ -336,7 +396,9 @@ class GenreChipView extends StatelessWidget {
 class MovieDetailsSliverAppBarView extends StatelessWidget {
   final Function onTapBack;
 
-  MovieDetailsSliverAppBarView(this.onTapBack);
+  final MovieVO mMovie;
+
+  MovieDetailsSliverAppBarView(this.onTapBack, this.mMovie);
 
   @override
   Widget build(BuildContext context) {
@@ -351,11 +413,11 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
             background: Stack(
               children: [
                 Positioned.fill(
-                  child: MovieDetailsAppBarImageView(),
+                  child: MovieDetailsAppBarImageView(mMovie.posterPath),
                 ),
-                // Positioned.fill(
-                //   child: GradientView(),
-                // ),
+                Positioned.fill(
+                  child: GradientView(),
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
@@ -386,23 +448,10 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
                       right: MARGIN_MEDIUM_2,
                       bottom: MARGIN_LARGE,
                     ),
-                    child: MovieDetailsAppBarInfoView(),
+                    child: MovieDetailsAppBarInfoView(mMovie),
                   ),
                 ),
               ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: MARGIN_MEDIUM_2,
-              decoration: BoxDecoration(
-                color: HOME_SCREEN_BACKGROUND_COLOR,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(MARGIN_XXLARGE),
-                  topRight: Radius.circular(MARGIN_XXLARGE),
-                ),
-              ),
             ),
           ),
         ],
@@ -412,6 +461,10 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
 }
 
 class MovieDetailsAppBarInfoView extends StatelessWidget {
+  final MovieVO mMovie;
+
+  MovieDetailsAppBarInfoView(this.mMovie);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -420,7 +473,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
       children: [
         Row(
           children: [
-            MovieDetailsYearView(),
+            MovieDetailsYearView(mMovie.releaseDate.substring(0, 4)),
             Spacer(),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -433,7 +486,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
                     SizedBox(
                       height: MARGIN_SMALL,
                     ),
-                    TitleText("38876 VOTES"),
+                    TitleText("${mMovie.voteCount} VOTES"),
                     SizedBox(
                       height: MARGIN_CARD_MEDIUM_2,
                     ),
@@ -441,7 +494,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
                 ),
                 SizedBox(width: MARGIN_MEDIUM),
                 Text(
-                  "9,76",
+                  "${mMovie.voteAverage}",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: MOVIE_DETAILS_RATING_TEXT_SIZE,
@@ -453,7 +506,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
         ),
         SizedBox(height: MARGIN_MEDIUM),
         Text(
-          "X-Men Origins : The Wolverine",
+          mMovie.title,
           style: TextStyle(
             color: Colors.white,
             fontSize: TEXT_HEADING_2X,
@@ -466,9 +519,9 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
 }
 
 class MovieDetailsYearView extends StatelessWidget {
-  const MovieDetailsYearView({
-    Key key,
-  }) : super(key: key);
+  final String year;
+
+  MovieDetailsYearView(this.year);
 
   @override
   Widget build(BuildContext context) {
@@ -483,7 +536,7 @@ class MovieDetailsYearView extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "2016",
+          year,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -538,10 +591,14 @@ class BackButtonView extends StatelessWidget {
 }
 
 class MovieDetailsAppBarImageView extends StatelessWidget {
+  final String movieImage;
+
+  MovieDetailsAppBarImageView(this.movieImage);
+
   @override
   Widget build(BuildContext context) {
     return Image.network(
-      "https://static.wikia.nocookie.net/xmenmovies/images/e/ed/TheWolverine_poster.jpg/revision/latest/top-crop/width/360/height/360?cb=20151224111601",
+      "$IMAGE_BASE_URL$movieImage",
       fit: BoxFit.cover,
     );
   }

@@ -1,9 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'base_actor_vo.dart';
+
 part 'credit_vo.g.dart';
 
 @JsonSerializable()
-class CreditVO {
+class CreditVO extends BaseActorVO {
   @JsonKey(name: "adult")
   bool adult;
   @JsonKey(name: "gender")
@@ -12,14 +14,10 @@ class CreditVO {
   int id;
   @JsonKey(name: "known_for_department")
   String knownForDepartment;
-  @JsonKey(name: "name")
-  String name;
   @JsonKey(name: "original_name")
   String originalName;
   @JsonKey(name: "popularity")
   double popularity;
-  @JsonKey(name: "profile_path")
-  String profilePath;
   @JsonKey(name: "cast_id")
   int castId;
   @JsonKey(name: "character")
@@ -34,18 +32,28 @@ class CreditVO {
     this.gender,
     this.id,
     this.knownForDepartment,
-    this.name,
     this.originalName,
     this.popularity,
-    this.profilePath,
     this.castId,
     this.character,
     this.creditId,
     this.order,
-  );
+    String name,
+    String profilePath,
+  ) : super(name, profilePath);
 
   factory CreditVO.fromJson(Map<String, dynamic> json) =>
       _$CreditVOFromJson(json);
 
   Map<String, dynamic> toJson() => _$CreditVOToJson(this);
+
+  bool isActor() {
+    return knownForDepartment == KNOWN_FOR_DEPARTMENT_ACTING;
+  }
+
+  bool isCreator() {
+    return knownForDepartment != KNOWN_FOR_DEPARTMENT_ACTING;
+  }
 }
+
+const String KNOWN_FOR_DEPARTMENT_ACTING = "Acting";
