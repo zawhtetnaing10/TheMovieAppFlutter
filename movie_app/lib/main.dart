@@ -14,16 +14,8 @@ import 'package:movie_app/data/vos/spoken_language_vo.dart';
 import 'package:movie_app/pages/home_page.dart';
 import 'package:movie_app/persistence/hive_constants.dart';
 
-void main() {
-  initHive();
-  runApp(MyApp());
-}
-
-void initHive() async {
+void main() async {
   await Hive.initFlutter();
-
-  await Hive.openBox<ActorVO>(BOX_NAME_ACTOR_VO);
-  await Hive.openBox<MovieVO>(BOX_NAME_MOVIE_VO);
 
   Hive.registerAdapter(ActorVOAdapter());
   Hive.registerAdapter(BaseActorVOAdapter());
@@ -35,6 +27,12 @@ void initHive() async {
   Hive.registerAdapter(ProductionCompanyVOAdapter());
   Hive.registerAdapter(ProductionCountryVOAdapter());
   Hive.registerAdapter(SpokenLanguageVOAdapter());
+
+  await Hive.openBox<ActorVO>(BOX_NAME_ACTOR_VO);
+  await Hive.openBox<MovieVO>(BOX_NAME_MOVIE_VO);
+  await Hive.openBox<GenreVO>(BOX_NAME_GENRE_VO);
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

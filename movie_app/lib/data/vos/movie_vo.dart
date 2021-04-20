@@ -116,33 +116,46 @@ class MovieVO {
   @HiveField(25)
   int voteCount;
 
+  @HiveField(26)
+  bool isNowPlaying;
+
+  @HiveField(27)
+  bool isPopular;
+
+  @HiveField(28)
+  bool isTopRated;
+
   MovieVO(
-      this.adult,
-      this.backDropPath,
-      this.genreIds,
-      this.belongsToCollection,
-      this.budget,
-      this.genres,
-      this.homePage,
-      this.id,
-      this.imdbId,
-      this.originalLanguage,
-      this.originalTitle,
-      this.overview,
-      this.popularity,
-      this.posterPath,
-      this.productionCompanies,
-      this.productionCountries,
-      this.revenue,
-      this.runTime,
-      this.releaseDate,
-      this.spokenLanguages,
-      this.status,
-      this.tagLine,
-      this.title,
-      this.video,
-      this.voteAverage,
-      this.voteCount);
+    this.adult,
+    this.backDropPath,
+    this.genreIds,
+    this.belongsToCollection,
+    this.budget,
+    this.genres,
+    this.homePage,
+    this.id,
+    this.imdbId,
+    this.originalLanguage,
+    this.originalTitle,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.productionCompanies,
+    this.productionCountries,
+    this.revenue,
+    this.runTime,
+    this.releaseDate,
+    this.spokenLanguages,
+    this.status,
+    this.tagLine,
+    this.title,
+    this.video,
+    this.voteAverage,
+    this.voteCount, {
+    this.isPopular,
+    this.isNowPlaying,
+    this.isTopRated,
+  });
 
   factory MovieVO.fromJson(Map<String, dynamic> json) =>
       _$MovieVOFromJson(json);

@@ -45,8 +45,26 @@ class _HomePageState extends State<HomePage> {
       debugPrint(error.toString());
     });
 
+    /// Now Playing Movies Database
+    mMovieModel.getNowPlayingMoviesFromDatabase().then((movieList) {
+      setState(() {
+        mNowPlayingMovieList = movieList;
+      });
+    }).catchError((error) {
+      debugPrint(error.toString());
+    });
+
     /// Popular Movies
     mMovieModel.getPopularMovies(1).then((movieList) {
+      setState(() {
+        mPopularMoviesList = movieList;
+      });
+    }).catchError((error) {
+      debugPrint(error.toString());
+    });
+
+    /// Popular Movies Database
+    mMovieModel.getPopularMoviesFromDatabase().then((movieList) {
       setState(() {
         mPopularMoviesList = movieList;
       });
@@ -66,6 +84,18 @@ class _HomePageState extends State<HomePage> {
       debugPrint(error.toString());
     });
 
+    /// Genres Database
+    mMovieModel.getGenresFromDatabase().then((genreList) {
+      setState(() {
+        mGenreList = genreList;
+
+        /// Movies By Genre
+        _getMoviesByGenreAndRefresh(mGenreList.first.id);
+      });
+    }).catchError((error) {
+      debugPrint(error.toString());
+    });
+
     /// Showcases
     mMovieModel.getTopRatedMovies(1).then((movieList) {
       setState(() {
@@ -75,8 +105,26 @@ class _HomePageState extends State<HomePage> {
       debugPrint(error.toString());
     });
 
+    /// Showcases Database
+    mMovieModel.getTopRatedMoviesFromDatabase().then((movieList) {
+      setState(() {
+        mShowCaseMovieList = movieList;
+      });
+    }).catchError((error) {
+      debugPrint(error.toString());
+    });
+
     /// Actors
     mMovieModel.getActors(1).then((actorList) {
+      setState(() {
+        mActors = actorList;
+      });
+    }).catchError((error) {
+      debugPrint(error.toString());
+    });
+
+    /// Actors Database
+    mMovieModel.getAllActorsFromDatabase().then((actorList) {
       setState(() {
         mActors = actorList;
       });
