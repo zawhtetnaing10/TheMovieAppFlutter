@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
                     (BuildContext context, Widget child, MovieModelImpl model) {
                   return BestPopularMoviesAndSerialsSectionView(
                     (movieId) =>
-                        _navigateToMovieDetailsScreen(context, movieId),
+                        _navigateToMovieDetailsScreen(context, movieId, model),
                     model.mNowPlayingMovieList,
                   );
                 },
@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
                   return GenreSectionView(
                     genreList: model.mGenreList,
                     onTapMovie: (movieId) =>
-                        _navigateToMovieDetailsScreen(context, movieId),
+                        _navigateToMovieDetailsScreen(context, movieId, model),
                     onTapGenre: (genreId) => model.getMoviesByGenre(genreId),
                     mMoviesByGenreList: model.mMoviesByGenreList,
                   );
@@ -111,7 +111,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _navigateToMovieDetailsScreen(BuildContext context, int movieId) {
+  void _navigateToMovieDetailsScreen(
+      BuildContext context, int movieId, MovieModelImpl model) {
+    model.getMovieDetails(movieId);
+    model.getCreditsByMovie(movieId);
     Navigator.push(
       context,
       MaterialPageRoute(

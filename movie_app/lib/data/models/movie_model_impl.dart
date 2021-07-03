@@ -36,12 +36,18 @@ class MovieModelImpl extends MovieModel {
   ActorDao mActorDao = ActorDao();
 
   /// State
+  /// Home Page
   List<MovieVO> mNowPlayingMovieList;
   List<MovieVO> mPopularMoviesList;
   List<GenreVO> mGenreList;
   List<ActorVO> mActors;
   List<MovieVO> mShowCaseMovieList;
   List<MovieVO> mMoviesByGenreList;
+
+  /// Details Page
+  MovieVO mMovie;
+  List<CreditVO> mActorsList;
+  List<CreditVO> mCreatorsList;
 
   // Network
   @override
@@ -109,8 +115,8 @@ class MovieModelImpl extends MovieModel {
   }
 
   @override
-  Future<List<ActorVO>> getActors(int page) {
-    return mDataAgent.getActors(page).then((actors) async {
+  void getActors(int page) {
+    mDataAgent.getActors(page).then((actors) async {
       mActorDao.saveAllActors(actors);
       mActors = actors;
       notifyListeners();
@@ -119,14 +125,23 @@ class MovieModelImpl extends MovieModel {
   }
 
   @override
-  Future<List<CreditVO>> getCreditsByMovie(int movieId) {
-    return mDataAgent.getCreditsByMovie(movieId);
+  void getCreditsByMovie(int movieId) {
+    mDataAgent.getCreditsByMovie(movieId).then((creditsList) {
+      this.mActorsList =
+          creditsList.where((credit) => credit.isActor()).toList();
+      this.mCreatorsList =
+          creditsList.where((credit) => credit.isCreator()).toList();
+      notifyListeners();
+    });
   }
 
   @override
-  Future<MovieVO> getMovieDetails(int movieId) {
-    return mDataAgent.getMovieDetails(movieId).then((movie) async {
+  void getMovieDetails(int movieId) {
+    mMovie = null;
+    mDataAgent.getMovieDetails(movieId).then((movie) async {
       mMovieDao.saveSingleMovie(movie);
+      this.mMovie = movie;
+      notifyListeners();
       return Future.value(movie);
     });
   }
@@ -184,8 +199,9 @@ class MovieModelImpl extends MovieModel {
   }
 
   @override
-  Future<MovieVO> getMovieDetailsFromDatabase(int movieId) {
-    return Future.value(mMovieDao.getMovieById(movieId));
+  void getMovieDetailsFromDatabase(int movieId) {
+    mMovie = mMovieDao.getMovieById(movieId);
+    notifyListeners();
   }
 
   @override
