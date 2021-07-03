@@ -36,14 +36,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    /// Now Playing Movies
-    mMovieModel.getNowPlayingMovies(1).then((movieList) {
-      setState(() {
-        mNowPlayingMovieList = movieList;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
+    // /// Now Playing Movies
+    // mMovieModel.getNowPlayingMovies(1).then((movieList) {
+    //   setState(() {
+    //     mNowPlayingMovieList = movieList;
+    //   });
+    // }).catchError((error) {
+    //   debugPrint(error.toString());
+    // });
 
     /// Now Playing Movies Database
     mMovieModel.getNowPlayingMoviesFromDatabase().then((movieList) {
@@ -54,14 +54,14 @@ class _HomePageState extends State<HomePage> {
       debugPrint(error.toString());
     });
 
-    /// Popular Movies
-    mMovieModel.getPopularMovies(1).then((movieList) {
-      setState(() {
-        mPopularMoviesList = movieList;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
+    // /// Popular Movies
+    // mMovieModel.getPopularMovies(1).then((movieList) {
+    //   setState(() {
+    //     mPopularMoviesList = movieList;
+    //   });
+    // }).catchError((error) {
+    //   debugPrint(error.toString());
+    // });
 
     /// Popular Movies Database
     mMovieModel.getPopularMoviesFromDatabase().then((movieList) {
@@ -96,14 +96,14 @@ class _HomePageState extends State<HomePage> {
       debugPrint(error.toString());
     });
 
-    /// Showcases
-    mMovieModel.getTopRatedMovies(1).then((movieList) {
-      setState(() {
-        mShowCaseMovieList = movieList;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
+    // /// Showcases
+    // mMovieModel.getTopRatedMovies(1).then((movieList) {
+    //   setState(() {
+    //     mShowCaseMovieList = movieList;
+    //   });
+    // }).catchError((error) {
+    //   debugPrint(error.toString());
+    // });
 
     /// Showcases Database
     mMovieModel.getTopRatedMoviesFromDatabase().then((movieList) {
@@ -242,7 +242,7 @@ class GenreSectionView extends StatelessWidget {
             horizontal: MARGIN_MEDIUM_2,
           ),
           child: DefaultTabController(
-            length: genreList.length,
+            length: genreList?.length ?? 0,
             child: TabBar(
               onTap: (index) {
                 this.onTapGenre(genreList[index].id);
