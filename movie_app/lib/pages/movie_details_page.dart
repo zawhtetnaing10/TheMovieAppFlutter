@@ -30,6 +30,12 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   }
 
   @override
+  void dispose() {
+    _bloc.disposeStreams();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
