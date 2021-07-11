@@ -39,7 +39,7 @@ class HomeBloc {
       mGenreListStreamController.sink.add(genreList);
 
       /// Movies By Genre
-      _getMoviesByGenreAndRefresh(genreList.first.id);
+      getMoviesByGenreAndRefresh(genreList.first.id);
     }).catchError((error) {});
 
     /// Genres Database
@@ -47,7 +47,7 @@ class HomeBloc {
       mGenreListStreamController.sink.add(genreList);
 
       /// Movies By Genre
-      _getMoviesByGenreAndRefresh(genreList.first.id);
+      getMoviesByGenreAndRefresh(genreList.first.id);
     }).catchError((error) {});
 
     /// Showcases Database
@@ -66,7 +66,11 @@ class HomeBloc {
     }).catchError((error) {});
   }
 
-  void _getMoviesByGenreAndRefresh(int genreId) {
+  void onTapGenre(int genreId) {
+    getMoviesByGenreAndRefresh(genreId);
+  }
+
+  void getMoviesByGenreAndRefresh(int genreId) {
     mMovieModel.getMoviesByGenre(genreId).then((moviesByGenre) {
       mMoviesByGenreListStreamController.sink.add(moviesByGenre);
     }).catchError((error) {});

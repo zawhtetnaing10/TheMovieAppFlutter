@@ -108,7 +108,8 @@ class _HomePageState extends State<HomePage> {
                         genreList: genreSnapShot.data,
                         onTapMovie: (movieId) =>
                             _navigateToMovieDetailsScreen(context, movieId),
-                        //onTapGenre: (genreId) => _getMoviesByGenreAndRefresh(genreId),
+                        onTapGenre: (genreId) =>
+                            _bloc.getMoviesByGenreAndRefresh(genreId),
                         mMoviesByGenreList: moviesByGenreSnapShot.data,
                       );
                     },
