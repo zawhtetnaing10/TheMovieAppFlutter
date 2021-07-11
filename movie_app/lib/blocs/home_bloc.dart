@@ -8,12 +8,17 @@ import 'package:movie_app/data/vos/movie_vo.dart';
 
 class HomeBloc {
   /// Reactive Streams
-  StreamController<List<MovieVO>> mNowPlayingStreamController;
-  StreamController<List<MovieVO>> mPopularMoviesListStreamController;
-  StreamController<List<GenreVO>> mGenreListStreamController;
-  StreamController<List<ActorVO>> mActorsStreamController;
-  StreamController<List<MovieVO>> mShowCaseMovieListStreamController;
-  StreamController<List<MovieVO>> mMoviesByGenreListStreamController;
+  StreamController<List<MovieVO>> mNowPlayingStreamController =
+      StreamController();
+  StreamController<List<MovieVO>> mPopularMoviesListStreamController =
+      StreamController();
+  StreamController<List<GenreVO>> mGenreListStreamController =
+      StreamController();
+  StreamController<List<ActorVO>> mActorsStreamController = StreamController();
+  StreamController<List<MovieVO>> mShowCaseMovieListStreamController =
+      StreamController();
+  StreamController<List<MovieVO>> mMoviesByGenreListStreamController =
+      StreamController();
 
   /// Models
   MovieModel mMovieModel = MovieModelImpl();
