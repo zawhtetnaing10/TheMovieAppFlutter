@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/blocs/movie_details_bloc.dart';
+import 'package:movie_app/data/vos/credit_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/network/api_constants.dart';
 import 'package:movie_app/resources/colors.dart';
@@ -21,15 +22,16 @@ class MovieDetailsPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MovieDetailsBloc(movieId),
       child: Scaffold(
-        body: Consumer<MovieDetailsBloc>(
-          builder: (context, bloc, child) => Container(
+        body: Selector<MovieDetailsBloc, MovieVO>(
+          selector: (context, bloc) => bloc.mMovie,
+          builder: (context, movie, child) => Container(
             color: HOME_SCREEN_BACKGROUND_COLOR,
-            child: (bloc.mMovie != null)
+            child: (movie != null)
                 ? CustomScrollView(
                     slivers: [
                       MovieDetailsSliverAppBarView(
                         () => Navigator.pop(context),
-                        bloc.mMovie,
+                        movie,
                       ),
                       SliverList(
                         delegate: SliverChildListDelegate(
@@ -38,31 +40,39 @@ class MovieDetailsPage extends StatelessWidget {
                               margin: EdgeInsets.symmetric(
                                 horizontal: MARGIN_MEDIUM_2,
                               ),
-                              child: TrailerSection(bloc.mMovie),
+                              child: TrailerSection(movie),
                             ),
                             SizedBox(height: MARGIN_LARGE),
-                            ActorsAndCreatorsSectionView(
-                              MOVIE_DETAILS_SCREEN_ACTORS_TITLE,
-                              "",
-                              seeMoreButtonVisibility: false,
-                              mActorsList: bloc.mActorsList ?? [],
+                            Selector<MovieDetailsBloc, List<CreditVO>>(
+                              selector: (context, bloc) => bloc.mActorsList,
+                              builder: (context, actorList, child) =>
+                                  ActorsAndCreatorsSectionView(
+                                MOVIE_DETAILS_SCREEN_ACTORS_TITLE,
+                                "",
+                                seeMoreButtonVisibility: false,
+                                mActorsList: actorList ?? [],
+                              ),
                             ),
                             SizedBox(height: MARGIN_LARGE),
                             Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: MARGIN_MEDIUM_2,
                               ),
-                              child: AboutFilmSectionView(bloc.mMovie),
+                              child: AboutFilmSectionView(movie),
                             ),
                             SizedBox(height: MARGIN_LARGE),
-                            (bloc.mCreatorsList != null &&
-                                    bloc.mCreatorsList.isNotEmpty)
-                                ? ActorsAndCreatorsSectionView(
-                                    MOVIE_DETAILS_SCREEN_CREATORS_TITLE,
-                                    MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
-                                    mActorsList: bloc.mCreatorsList ?? [],
-                                  )
-                                : Container(),
+                            Selector<MovieDetailsBloc, List<CreditVO>>(
+                                selector: (context, bloc) => bloc.mCreatorsList,
+                                builder: (context, creatorsList, child) {
+                                  return (creatorsList != null &&
+                                          creatorsList.isNotEmpty)
+                                      ? ActorsAndCreatorsSectionView(
+                                          MOVIE_DETAILS_SCREEN_CREATORS_TITLE,
+                                          MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
+                                          mActorsList: creatorsList ?? [],
+                                        )
+                                      : Container();
+                                })
                           ],
                         ),
                       )
