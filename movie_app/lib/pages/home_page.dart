@@ -1,8 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/models/movie_model.dart';
-import 'package:movie_app/data/models/movie_model_impl.dart';
-import 'package:movie_app/data/vos/actor_vo.dart';
+import 'package:movie_app/blocs/home_bloc.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/pages/movie_details_page.dart';
@@ -16,167 +14,88 @@ import 'package:movie_app/widgets/actors_and_creators_section_view.dart';
 import 'package:movie_app/widgets/see_more_text.dart';
 import 'package:movie_app/widgets/title_text.dart';
 import 'package:movie_app/widgets/title_text_with_see_more_view.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  MovieModel mMovieModel = MovieModelImpl();
-
-  List<MovieVO> mNowPlayingMovieList;
-  List<MovieVO> mPopularMoviesList;
-  List<GenreVO> mGenreList;
-  List<ActorVO> mActors;
-  List<MovieVO> mShowCaseMovieList;
-  List<MovieVO> mMoviesByGenreList;
-
-  @override
-  void initState() {
-    super.initState();
-
-    /// Now Playing Movies Database
-    mMovieModel.getNowPlayingMoviesFromDatabase().then((movieList) {
-      setState(() {
-        mNowPlayingMovieList = movieList;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-
-    /// Popular Movies Database
-    mMovieModel.getPopularMoviesFromDatabase().then((movieList) {
-      setState(() {
-        mPopularMoviesList = movieList;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-
-    /// Genres
-    mMovieModel.getGenres().then((genreList) {
-      setState(() {
-        mGenreList = genreList;
-
-        /// Movies By Genre
-        _getMoviesByGenreAndRefresh(mGenreList.first.id);
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-
-    /// Genres Database
-    mMovieModel.getGenresFromDatabase().then((genreList) {
-      setState(() {
-        mGenreList = genreList;
-
-        /// Movies By Genre
-        _getMoviesByGenreAndRefresh(mGenreList.first.id);
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-
-    /// Showcases Database
-    mMovieModel.getTopRatedMoviesFromDatabase().then((movieList) {
-      setState(() {
-        mShowCaseMovieList = movieList;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-
-    /// Actors
-    mMovieModel.getActors(1).then((actorList) {
-      setState(() {
-        mActors = actorList;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-
-    /// Actors Database
-    mMovieModel.getAllActorsFromDatabase().then((actorList) {
-      setState(() {
-        mActors = actorList;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-  }
-
-  void _getMoviesByGenreAndRefresh(int genreId) {
-    mMovieModel.getMoviesByGenre(genreId).then((moviesByGenre) {
-      setState(() {
-        mMoviesByGenreList = moviesByGenre;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: PRIMARY_COLOR,
-        title: Text(
-          MAIN_SCREEN_APP_BAR_TITLE,
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
+    return ChangeNotifierProvider(
+      create: (context) => HomeBloc(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: PRIMARY_COLOR,
+          title: Text(
+            MAIN_SCREEN_APP_BAR_TITLE,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+            ),
           ),
+          leading: Icon(
+            Icons.menu,
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: MARGIN_MEDIUM_2,
+              ),
+              child: Icon(
+                Icons.search,
+              ),
+            )
+          ],
         ),
-        leading: Icon(
-          Icons.menu,
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: MARGIN_MEDIUM_2,
+        body: Container(
+          color: HOME_SCREEN_BACKGROUND_COLOR,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Consumer<HomeBloc>(
+                  builder: (context, bloc, child) => BannerSectionView(
+                    mPopularMovies:
+                        bloc.mPopularMoviesList?.take(8)?.toList() ?? [],
+                  ),
+                ),
+                SizedBox(height: MARGIN_LARGE),
+                Consumer<HomeBloc>(
+                  builder: (context, bloc, child) =>
+                      BestPopularMoviesAndSerialsSectionView(
+                    (movieId) =>
+                        _navigateToMovieDetailsScreen(context, movieId),
+                    bloc.mNowPlayingMovieList,
+                  ),
+                ),
+                SizedBox(height: MARGIN_LARGE),
+                CheckMovieShowTimesSectionView(),
+                SizedBox(height: MARGIN_LARGE),
+                Consumer<HomeBloc>(
+                  builder: (context, bloc, child) => GenreSectionView(
+                    genreList: bloc.mGenreList ?? [],
+                    onTapMovie: (movieId) =>
+                        _navigateToMovieDetailsScreen(context, movieId),
+                    // onTapGenre: (genreId) =>
+                    //     _getMoviesByGenreAndRefresh(genreId),
+                    mMoviesByGenreList: bloc.mMoviesByGenreList,
+                  ),
+                ),
+                SizedBox(height: MARGIN_LARGE),
+                Consumer<HomeBloc>(
+                    builder: (context, bloc, child) =>
+                        ShowcasesSection(bloc.mShowCaseMovieList)),
+                SizedBox(height: MARGIN_LARGE),
+                Consumer<HomeBloc>(
+                  builder: (context, bloc, child) =>
+                      ActorsAndCreatorsSectionView(
+                    BEST_ACTORS_TITLE,
+                    BEST_ACTORS_SEE_MORE,
+                    mActorsList: bloc.mActors,
+                  ),
+                ),
+              ],
             ),
-            child: Icon(
-              Icons.search,
-            ),
-          )
-        ],
-      ),
-      body: Container(
-        color: HOME_SCREEN_BACKGROUND_COLOR,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BannerSectionView(
-                mPopularMovies: mPopularMoviesList?.take(8)?.toList() ?? [],
-              ),
-              SizedBox(height: MARGIN_LARGE),
-              BestPopularMoviesAndSerialsSectionView(
-                (movieId) => _navigateToMovieDetailsScreen(context, movieId),
-                mNowPlayingMovieList,
-              ),
-              SizedBox(height: MARGIN_LARGE),
-              CheckMovieShowTimesSectionView(),
-              SizedBox(height: MARGIN_LARGE),
-              GenreSectionView(
-                genreList: mGenreList,
-                onTapMovie: (movieId) =>
-                    _navigateToMovieDetailsScreen(context, movieId),
-                onTapGenre: (genreId) => _getMoviesByGenreAndRefresh(genreId),
-                mMoviesByGenreList: mMoviesByGenreList,
-              ),
-              SizedBox(height: MARGIN_LARGE),
-              ShowcasesSection(mShowCaseMovieList),
-              SizedBox(height: MARGIN_LARGE),
-              ActorsAndCreatorsSectionView(
-                BEST_ACTORS_TITLE,
-                BEST_ACTORS_SEE_MORE,
-                mActorsList: mActors,
-              ),
-            ],
           ),
         ),
       ),
@@ -208,46 +127,48 @@ class GenreSectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: MARGIN_MEDIUM_2,
-          ),
-          child: DefaultTabController(
-            length: genreList?.length ?? 0,
-            child: TabBar(
-              onTap: (index) {
-                this.onTapGenre(genreList[index].id);
-              },
-              isScrollable: true,
-              indicatorColor: PLAY_BUTTON_COLOR,
-              unselectedLabelColor: HOME_SCREEN_LIST_TITLE_COLOR,
-              tabs: genreList
-                  .map(
-                    (genre) => Tab(
-                      child: Text(genre.name),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        ),
-        Container(
-          color: PRIMARY_COLOR,
-          padding: EdgeInsets.only(
-            top: MARGIN_MEDIUM_2,
-            bottom: MARGIN_LARGE,
-          ),
-          child: HorizontalMovieListView(
-            (movieId) {
-              onTapMovie(movieId);
-            },
-            movieList: mMoviesByGenreList,
-          ),
-        ),
-      ],
-    );
+    return (genreList == null || (genreList?.isEmpty ?? true))
+        ? Center(child: CircularProgressIndicator())
+        : Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MARGIN_MEDIUM_2,
+                ),
+                child: DefaultTabController(
+                  length: genreList?.length ?? 0,
+                  child: TabBar(
+                    onTap: (index) {
+                      this.onTapGenre(genreList[index].id);
+                    },
+                    isScrollable: true,
+                    indicatorColor: PLAY_BUTTON_COLOR,
+                    unselectedLabelColor: HOME_SCREEN_LIST_TITLE_COLOR,
+                    tabs: genreList
+                        .map(
+                          (genre) => Tab(
+                            child: Text(genre.name),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ),
+              Container(
+                color: PRIMARY_COLOR,
+                padding: EdgeInsets.only(
+                  top: MARGIN_MEDIUM_2,
+                  bottom: MARGIN_LARGE,
+                ),
+                child: HorizontalMovieListView(
+                  (movieId) {
+                    onTapMovie(movieId);
+                  },
+                  movieList: mMoviesByGenreList,
+                ),
+              ),
+            ],
+          );
   }
 }
 
