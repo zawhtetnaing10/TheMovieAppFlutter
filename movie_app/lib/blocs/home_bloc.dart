@@ -79,6 +79,10 @@ class HomeBloc extends ChangeNotifier {
     });
   }
 
+  void onTapGenre(int genreId) {
+    _getMoviesByGenreAndRefresh(genreId);
+  }
+
   void _getMoviesByGenreAndRefresh(int genreId) {
     mMovieModel.getMoviesByGenre(genreId).then((moviesByGenre) {
       mMoviesByGenreList = moviesByGenre;

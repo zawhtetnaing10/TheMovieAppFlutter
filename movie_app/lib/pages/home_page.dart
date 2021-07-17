@@ -76,8 +76,7 @@ class HomePage extends StatelessWidget {
                     genreList: bloc.mGenreList ?? [],
                     onTapMovie: (movieId) =>
                         _navigateToMovieDetailsScreen(context, movieId),
-                    // onTapGenre: (genreId) =>
-                    //     _getMoviesByGenreAndRefresh(genreId),
+                    onTapGenre: (genreId) => bloc.onTapGenre(genreId),
                     mMoviesByGenreList: bloc.mMoviesByGenreList,
                   ),
                 ),
