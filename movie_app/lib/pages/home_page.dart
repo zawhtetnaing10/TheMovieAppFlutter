@@ -36,15 +36,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    // /// Now Playing Movies
-    // mMovieModel.getNowPlayingMovies(1).then((movieList) {
-    //   setState(() {
-    //     mNowPlayingMovieList = movieList;
-    //   });
-    // }).catchError((error) {
-    //   debugPrint(error.toString());
-    // });
-
     /// Now Playing Movies Database
     mMovieModel.getNowPlayingMoviesFromDatabase().then((movieList) {
       setState(() {
@@ -53,15 +44,6 @@ class _HomePageState extends State<HomePage> {
     }).catchError((error) {
       debugPrint(error.toString());
     });
-
-    // /// Popular Movies
-    // mMovieModel.getPopularMovies(1).then((movieList) {
-    //   setState(() {
-    //     mPopularMoviesList = movieList;
-    //   });
-    // }).catchError((error) {
-    //   debugPrint(error.toString());
-    // });
 
     /// Popular Movies Database
     mMovieModel.getPopularMoviesFromDatabase().then((movieList) {
@@ -95,15 +77,6 @@ class _HomePageState extends State<HomePage> {
     }).catchError((error) {
       debugPrint(error.toString());
     });
-
-    // /// Showcases
-    // mMovieModel.getTopRatedMovies(1).then((movieList) {
-    //   setState(() {
-    //     mShowCaseMovieList = movieList;
-    //   });
-    // }).catchError((error) {
-    //   debugPrint(error.toString());
-    // });
 
     /// Showcases Database
     mMovieModel.getTopRatedMoviesFromDatabase().then((movieList) {
