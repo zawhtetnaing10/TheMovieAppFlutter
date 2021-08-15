@@ -7,12 +7,12 @@ import 'package:movie_app/data/vos/movie_vo.dart';
 
 class HomeBloc extends ChangeNotifier {
   /// States
-  List<MovieVO> mNowPlayingMovieList;
-  List<MovieVO> mPopularMoviesList;
-  List<GenreVO> mGenreList;
-  List<ActorVO> mActors;
-  List<MovieVO> mShowCaseMovieList;
-  List<MovieVO> mMoviesByGenreList;
+  List<MovieVO>? mNowPlayingMovieList;
+  List<MovieVO>? mPopularMoviesList;
+  List<GenreVO>? mGenreList;
+  List<ActorVO>? mActors;
+  List<MovieVO>? mShowCaseMovieList;
+  List<MovieVO>? mMoviesByGenreList;
 
   /// Model
   MovieModel mMovieModel = MovieModelImpl();
@@ -35,11 +35,11 @@ class HomeBloc extends ChangeNotifier {
     });
 
     /// Genres
-    mMovieModel.getGenres().then((genreList) {
+    mMovieModel.getGenres()?.then((genreList) {
       mGenreList = genreList;
 
       /// Movies By Genre
-      _getMoviesByGenreAndRefresh(mGenreList.first.id);
+      _getMoviesByGenreAndRefresh(mGenreList?.first.id ?? 0);
     }).catchError((error) {
       debugPrint(error.toString());
     });
@@ -49,7 +49,7 @@ class HomeBloc extends ChangeNotifier {
       mGenreList = genreList;
 
       /// Movies By Genre
-      _getMoviesByGenreAndRefresh(mGenreList.first.id);
+      _getMoviesByGenreAndRefresh(mGenreList?.first.id ?? 0);
     }).catchError((error) {
       debugPrint(error.toString());
     });
@@ -63,7 +63,7 @@ class HomeBloc extends ChangeNotifier {
     });
 
     /// Actors
-    mMovieModel.getActors(1).then((actorList) {
+    mMovieModel.getActors(1)?.then((actorList) {
       mActors = actorList;
       notifyListeners();
     }).catchError((error) {
@@ -84,7 +84,7 @@ class HomeBloc extends ChangeNotifier {
   }
 
   void _getMoviesByGenreAndRefresh(int genreId) {
-    mMovieModel.getMoviesByGenre(genreId).then((moviesByGenre) {
+    mMovieModel.getMoviesByGenre(genreId)?.then((moviesByGenre) {
       mMoviesByGenreList = moviesByGenre;
       notifyListeners();
     }).catchError((error) {
