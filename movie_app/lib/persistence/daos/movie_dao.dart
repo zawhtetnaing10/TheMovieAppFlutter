@@ -17,8 +17,10 @@ class MovieDao {
     await getMovieBox().putAll(movieMap);
   }
 
-  void saveSingleMovie(MovieVO movie) async {
-    return getMovieBox().put(movie.id, movie);
+  void saveSingleMovie(MovieVO? movie) async {
+    if (movie != null) {
+      return getMovieBox().put(movie.id, movie);
+    }
   }
 
   List<MovieVO> getAllMovies() {

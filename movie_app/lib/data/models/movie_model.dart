@@ -9,11 +9,11 @@ abstract class MovieModel {
   void getPopularMovies(int page);
   void getTopRatedMovies(int page);
 
-  Future<List<GenreVO>> getGenres();
-  Future<List<MovieVO>> getMoviesByGenre(int genreId);
-  Future<List<ActorVO>> getActors(int page);
-  Future<MovieVO> getMovieDetails(int movieId);
-  Future<List<CreditVO>> getCreditsByMovie(int movieId);
+  Future<List<GenreVO>?>? getGenres();
+  Future<List<MovieVO>?>? getMoviesByGenre(int genreId);
+  Future<List<ActorVO>?>? getActors(int page);
+  Future<MovieVO?>? getMovieDetails(int movieId);
+  Future<List<CreditVO>?>? getCreditsByMovie(int movieId);
 
   // Database
   Stream<List<MovieVO>> getTopRatedMoviesFromDatabase();
@@ -21,5 +21,5 @@ abstract class MovieModel {
   Stream<List<MovieVO>> getPopularMoviesFromDatabase();
   Future<List<GenreVO>> getGenresFromDatabase();
   Future<List<ActorVO>> getAllActorsFromDatabase();
-  Future<MovieVO> getMovieDetailsFromDatabase(int movieId);
+  Future<MovieVO?>? getMovieDetailsFromDatabase(int movieId);
 }
