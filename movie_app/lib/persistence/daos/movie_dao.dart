@@ -25,7 +25,7 @@ class MovieDao {
     return getMovieBox().values.toList();
   }
 
-  MovieVO getMovieById(int movieId) {
+  MovieVO? getMovieById(int movieId) {
     return getMovieBox().get(movieId);
   }
 
