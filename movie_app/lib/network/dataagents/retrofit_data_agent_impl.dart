@@ -8,7 +8,7 @@ import 'package:movie_app/network/dataagents/movie_data_agent.dart';
 import 'package:movie_app/network/the_movie_api.dart';
 
 class RetrofitDataAgentImpl extends MovieDataAgent {
-  TheMovieApi mApi;
+  TheMovieApi? mApi;
 
   static final RetrofitDataAgentImpl _singleton =
       RetrofitDataAgentImpl._internal();
@@ -23,45 +23,45 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
   }
 
   @override
-  Future<List<MovieVO>> getNowPlayingMovies(int page) {
+  Future<List<MovieVO>?>? getNowPlayingMovies(int page) {
     return mApi
-        .getNowPlayingMovies(API_KEY, LANGUAGE_EN_US, page.toString())
+        ?.getNowPlayingMovies(API_KEY, LANGUAGE_EN_US, page.toString())
         .asStream()
         .map((response) => response.results)
         .first;
   }
 
   @override
-  Future<List<MovieVO>> getPopularMovies(int page) {
+  Future<List<MovieVO>?>? getPopularMovies(int page) {
     return mApi
-        .getPopularMovies(API_KEY, LANGUAGE_EN_US, page.toString())
+        ?.getPopularMovies(API_KEY, LANGUAGE_EN_US, page.toString())
         .asStream()
         .map((response) => response.results)
         .first;
   }
 
   @override
-  Future<List<MovieVO>> getTopRatedMovies(int page) {
+  Future<List<MovieVO>?>? getTopRatedMovies(int page) {
     return mApi
-        .getTopRatedMovies(API_KEY, LANGUAGE_EN_US, page.toString())
+        ?.getTopRatedMovies(API_KEY, LANGUAGE_EN_US, page.toString())
         .asStream()
         .map((response) => response.results)
         .first;
   }
 
   @override
-  Future<List<GenreVO>> getGenres() {
+  Future<List<GenreVO>?>? getGenres() {
     return mApi
-        .getGenres(API_KEY, LANGUAGE_EN_US)
+        ?.getGenres(API_KEY, LANGUAGE_EN_US)
         .asStream()
         .map((response) => response.genres)
         .first;
   }
 
   @override
-  Future<List<MovieVO>> getMoviesByGenre(int genreId) {
+  Future<List<MovieVO>?>? getMoviesByGenre(int genreId) {
     return mApi
-        .getMoviesByGenre(
+        ?.getMoviesByGenre(
           genreId.toString(),
           API_KEY,
           LANGUAGE_EN_US,
@@ -72,18 +72,18 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
   }
 
   @override
-  Future<List<ActorVO>> getActors(int page) {
+  Future<List<ActorVO>?>? getActors(int page) {
     return mApi
-        .getActors(API_KEY, LANGUAGE_EN_US, page.toString())
+        ?.getActors(API_KEY, LANGUAGE_EN_US, page.toString())
         .asStream()
         .map((response) => response.results)
         .first;
   }
 
   @override
-  Future<List<CreditVO>> getCreditsByMovie(int movieId) {
+  Future<List<CreditVO>?>? getCreditsByMovie(int movieId) {
     return mApi
-        .getCreditsByMovieResponse(
+        ?.getCreditsByMovieResponse(
             movieId.toString(), API_KEY, LANGUAGE_EN_US, 1.toString())
         .asStream()
         .map((response) => response.cast)
@@ -91,8 +91,8 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
   }
 
   @override
-  Future<MovieVO> getMovieDetails(int movieId) {
-    return mApi.getMovieDetails(
+  Future<MovieVO?>? getMovieDetails(int movieId) {
+    return mApi?.getMovieDetails(
         movieId.toString(), API_KEY, LANGUAGE_EN_US, 1.toString());
   }
 }
