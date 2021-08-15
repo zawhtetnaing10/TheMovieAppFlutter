@@ -10,7 +10,7 @@ class ActorsAndCreatorsSectionView extends StatelessWidget {
   final String seeMoreText;
   final bool seeMoreButtonVisibility;
 
-  final List<BaseActorVO> mActorsList;
+  final List<BaseActorVO>? mActorsList;
 
   ActorsAndCreatorsSectionView(this.titleText, this.seeMoreText,
       {this.seeMoreButtonVisibility = true, this.mActorsList});
@@ -40,10 +40,11 @@ class ActorsAndCreatorsSectionView extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.only(left: MARGIN_MEDIUM_2),
                     children: mActorsList
-                        .map((actor) => ActorView(
-                              mActor: actor,
-                            ))
-                        .toList()),
+                            ?.map((actor) => ActorView(
+                                  mActor: actor,
+                                ))
+                            .toList() ??
+                        []),
               ),
             ]),
           )

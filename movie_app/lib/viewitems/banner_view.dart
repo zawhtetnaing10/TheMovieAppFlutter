@@ -6,7 +6,7 @@ import 'package:movie_app/resources/dimens.dart';
 import 'package:movie_app/widgets/gradient_view.dart';
 
 class BannerView extends StatelessWidget {
-  final MovieVO mMovie;
+  final MovieVO? mMovie;
 
   BannerView({this.mMovie});
 
@@ -17,7 +17,7 @@ class BannerView extends StatelessWidget {
         children: [
           Positioned.fill(
             child: BannerImageView(
-              mImageUrl: mMovie.posterPath,
+              mImageUrl: mMovie?.posterPath ?? "",
             ),
           ),
           Positioned.fill(
@@ -26,7 +26,7 @@ class BannerView extends StatelessWidget {
           Align(
             alignment: Alignment.bottomLeft,
             child: BannerTitleView(
-              mMovieName: mMovie.title,
+              mMovieName: mMovie?.title ?? "",
             ),
           ),
           Align(
@@ -51,7 +51,7 @@ class PlayButtonView extends StatelessWidget {
 }
 
 class BannerTitleView extends StatelessWidget {
-  final String mMovieName;
+  final String? mMovieName;
 
   BannerTitleView({this.mMovieName});
 
@@ -64,7 +64,7 @@ class BannerTitleView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            mMovieName,
+            mMovieName ?? "",
             style: TextStyle(
               color: Colors.white,
               fontSize: TEXT_HEADING_1X,
@@ -86,7 +86,7 @@ class BannerTitleView extends StatelessWidget {
 }
 
 class BannerImageView extends StatelessWidget {
-  final String mImageUrl;
+  final String? mImageUrl;
 
   BannerImageView({this.mImageUrl});
 
