@@ -6,7 +6,7 @@ part 'get_movies_by_genre_response.g.dart';
 @JsonSerializable()
 class GetMoviesByGenreResponse {
   @JsonKey(name: 'items')
-  List<MovieVO> items;
+  List<MovieVO>? items;
 
   GetMoviesByGenreResponse({this.items});
 

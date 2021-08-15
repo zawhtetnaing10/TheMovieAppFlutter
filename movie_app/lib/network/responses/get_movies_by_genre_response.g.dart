@@ -9,8 +9,8 @@ part of 'get_movies_by_genre_response.dart';
 GetMoviesByGenreResponse _$GetMoviesByGenreResponseFromJson(
         Map<String, dynamic> json) =>
     GetMoviesByGenreResponse(
-      items: (json['items'] as List<dynamic>)
-          .map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
+      items: (json['items'] as List<dynamic>?)
+          ?.map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

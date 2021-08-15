@@ -7,13 +7,13 @@ part 'movie_list_response.g.dart';
 @JsonSerializable()
 class MovieListResponse {
   @JsonKey(name: "dates")
-  DateVO dates;
+  DateVO? dates;
 
   @JsonKey(name: "page")
-  int page;
+  int? page;
 
   @JsonKey(name: "results")
-  List<MovieVO> results;
+  List<MovieVO>? results;
 
   MovieListResponse({this.dates, this.page, this.results});
 

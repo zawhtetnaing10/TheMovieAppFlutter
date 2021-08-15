@@ -10,9 +10,10 @@ class GetActorsResponse {
   @JsonKey(name: 'message')
   String message;
   @JsonKey(name: 'results')
-  List<ActorVO> results;
+  List<ActorVO>? results;
 
-  GetActorsResponse({this.results});
+  GetActorsResponse(
+      {required this.code, required this.message, required this.results});
 
   factory GetActorsResponse.fromJson(Map<String, dynamic> json) =>
       _$GetActorsResponseFromJson(json);

@@ -8,12 +8,12 @@ part of 'get_actors_response.dart';
 
 GetActorsResponse _$GetActorsResponseFromJson(Map<String, dynamic> json) =>
     GetActorsResponse(
-      results: (json['results'] as List<dynamic>)
-          .map((e) => ActorVO.fromJson(e as Map<String, dynamic>))
+      code: json['code'] as int,
+      message: json['message'] as String,
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => ActorVO.fromJson(e as Map<String, dynamic>))
           .toList(),
-    )
-      ..code = json['code'] as int
-      ..message = json['message'] as String;
+    );
 
 Map<String, dynamic> _$GetActorsResponseToJson(GetActorsResponse instance) =>
     <String, dynamic>{
