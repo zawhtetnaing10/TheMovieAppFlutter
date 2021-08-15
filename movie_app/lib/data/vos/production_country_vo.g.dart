@@ -47,12 +47,11 @@ class ProductionCountryVOAdapter extends TypeAdapter<ProductionCountryVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProductionCountryVO _$ProductionCountryVOFromJson(Map<String, dynamic> json) {
-  return ProductionCountryVO(
-    json['iso_3166_1'] as String,
-    json['name'] as String,
-  );
-}
+ProductionCountryVO _$ProductionCountryVOFromJson(Map<String, dynamic> json) =>
+    ProductionCountryVO(
+      json['iso_3166_1'] as String,
+      json['name'] as String,
+    );
 
 Map<String, dynamic> _$ProductionCountryVOToJson(
         ProductionCountryVO instance) =>

@@ -53,14 +53,13 @@ class ProductionCompanyVOAdapter extends TypeAdapter<ProductionCompanyVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProductionCompanyVO _$ProductionCompanyVOFromJson(Map<String, dynamic> json) {
-  return ProductionCompanyVO(
-    json['id'] as int,
-    json['logo_path'] as String,
-    json['name'] as String,
-    json['origin_country'] as String,
-  );
-}
+ProductionCompanyVO _$ProductionCompanyVOFromJson(Map<String, dynamic> json) =>
+    ProductionCompanyVO(
+      json['id'] as int,
+      json['logo_path'] as String,
+      json['name'] as String,
+      json['origin_country'] as String,
+    );
 
 Map<String, dynamic> _$ProductionCompanyVOToJson(
         ProductionCompanyVO instance) =>

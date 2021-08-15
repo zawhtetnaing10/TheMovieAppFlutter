@@ -19,18 +19,18 @@ class HomeBloc extends ChangeNotifier {
 
   HomeBloc() {
     /// Now Playing Movies Database
-    mMovieModel.getNowPlayingMoviesFromDatabase().then((movieList) {
+    mMovieModel.getNowPlayingMoviesFromDatabase().listen((movieList) {
       mNowPlayingMovieList = movieList;
       notifyListeners();
-    }).catchError((error) {
+    }).onError((error) {
       debugPrint(error.toString());
     });
 
     /// Popular Movies Database
-    mMovieModel.getPopularMoviesFromDatabase().then((movieList) {
+    mMovieModel.getPopularMoviesFromDatabase().listen((movieList) {
       mPopularMoviesList = movieList;
       notifyListeners();
-    }).catchError((error) {
+    }).onError((error) {
       debugPrint(error.toString());
     });
 
@@ -55,10 +55,10 @@ class HomeBloc extends ChangeNotifier {
     });
 
     /// Showcases Database
-    mMovieModel.getTopRatedMoviesFromDatabase().then((movieList) {
+    mMovieModel.getTopRatedMoviesFromDatabase().listen((movieList) {
       mShowCaseMovieList = movieList;
       notifyListeners();
-    }).catchError((error) {
+    }).onError((error) {
       debugPrint(error.toString());
     });
 

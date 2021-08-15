@@ -6,18 +6,14 @@ part of 'movie_list_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MovieListResponse _$MovieListResponseFromJson(Map<String, dynamic> json) {
-  return MovieListResponse(
-    dates: json['dates'] == null
-        ? null
-        : DateVO.fromJson(json['dates'] as Map<String, dynamic>),
-    page: json['page'] as int,
-    results: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : MovieVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+MovieListResponse _$MovieListResponseFromJson(Map<String, dynamic> json) =>
+    MovieListResponse(
+      dates: DateVO.fromJson(json['dates'] as Map<String, dynamic>),
+      page: json['page'] as int,
+      results: (json['results'] as List<dynamic>)
+          .map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$MovieListResponseToJson(MovieListResponse instance) =>
     <String, dynamic>{

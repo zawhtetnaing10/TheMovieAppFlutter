@@ -7,15 +7,13 @@ part of 'get_credits_by_movie_response.dart';
 // **************************************************************************
 
 GetCreditsByMovieResponse _$GetCreditsByMovieResponseFromJson(
-    Map<String, dynamic> json) {
-  return GetCreditsByMovieResponse(
-    json['id'] as int,
-    (json['cast'] as List)
-        ?.map((e) =>
-            e == null ? null : CreditVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    GetCreditsByMovieResponse(
+      json['id'] as int,
+      (json['cast'] as List<dynamic>)
+          .map((e) => CreditVO.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$GetCreditsByMovieResponseToJson(
         GetCreditsByMovieResponse instance) =>

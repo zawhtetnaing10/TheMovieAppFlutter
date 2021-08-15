@@ -53,14 +53,12 @@ class CollectionVOAdapter extends TypeAdapter<CollectionVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-CollectionVO _$CollectionVOFromJson(Map<String, dynamic> json) {
-  return CollectionVO(
-    json['id'] as int,
-    json['name'] as String,
-    json['poster_path'] as String,
-    json['backdrop_path'] as String,
-  );
-}
+CollectionVO _$CollectionVOFromJson(Map<String, dynamic> json) => CollectionVO(
+      json['id'] as int,
+      json['name'] as String,
+      json['poster_path'] as String,
+      json['backdrop_path'] as String,
+    );
 
 Map<String, dynamic> _$CollectionVOToJson(CollectionVO instance) =>
     <String, dynamic>{

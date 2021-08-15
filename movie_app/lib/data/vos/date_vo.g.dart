@@ -47,12 +47,10 @@ class DateVOAdapter extends TypeAdapter<DateVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-DateVO _$DateVOFromJson(Map<String, dynamic> json) {
-  return DateVO(
-    maximum: json['maximum'] as String,
-    minimum: json['minimum'] as String,
-  );
-}
+DateVO _$DateVOFromJson(Map<String, dynamic> json) => DateVO(
+      maximum: json['maximum'] as String,
+      minimum: json['minimum'] as String,
+    );
 
 Map<String, dynamic> _$DateVOToJson(DateVO instance) => <String, dynamic>{
       'maximum': instance.maximum,

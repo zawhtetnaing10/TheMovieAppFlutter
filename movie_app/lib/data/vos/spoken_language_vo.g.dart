@@ -50,13 +50,12 @@ class SpokenLanguageVOAdapter extends TypeAdapter<SpokenLanguageVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-SpokenLanguageVO _$SpokenLanguageVOFromJson(Map<String, dynamic> json) {
-  return SpokenLanguageVO(
-    json['english_name'] as String,
-    json['iso_639_1'] as String,
-    json['name'] as String,
-  );
-}
+SpokenLanguageVO _$SpokenLanguageVOFromJson(Map<String, dynamic> json) =>
+    SpokenLanguageVO(
+      json['english_name'] as String,
+      json['iso_639_1'] as String,
+      json['name'] as String,
+    );
 
 Map<String, dynamic> _$SpokenLanguageVOToJson(SpokenLanguageVO instance) =>
     <String, dynamic>{

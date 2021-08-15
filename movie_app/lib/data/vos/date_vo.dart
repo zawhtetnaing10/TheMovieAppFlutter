@@ -14,7 +14,7 @@ class DateVO {
   @HiveField(1)
   String minimum;
 
-  DateVO({this.maximum, this.minimum});
+  DateVO({required this.maximum, required this.minimum});
 
   factory DateVO.fromJson(Map<String, dynamic> json) => _$DateVOFromJson(json);
 

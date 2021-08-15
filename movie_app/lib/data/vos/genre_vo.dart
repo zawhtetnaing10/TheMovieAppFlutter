@@ -15,7 +15,7 @@ class GenreVO {
   @HiveField(1)
   String name;
 
-  GenreVO({this.id, this.name});
+  GenreVO({required this.id, required this.name});
 
   factory GenreVO.fromJson(Map<String, dynamic> json) =>
       _$GenreVOFromJson(json);

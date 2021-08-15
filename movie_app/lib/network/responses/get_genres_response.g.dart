@@ -6,14 +6,12 @@ part of 'get_genres_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-GetGenresResponse _$GetGenresResponseFromJson(Map<String, dynamic> json) {
-  return GetGenresResponse(
-    genres: (json['genres'] as List)
-        ?.map((e) =>
-            e == null ? null : GenreVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+GetGenresResponse _$GetGenresResponseFromJson(Map<String, dynamic> json) =>
+    GetGenresResponse(
+      genres: (json['genres'] as List<dynamic>)
+          .map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$GetGenresResponseToJson(GetGenresResponse instance) =>
     <String, dynamic>{

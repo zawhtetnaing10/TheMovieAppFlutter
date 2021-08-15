@@ -152,9 +152,9 @@ class MovieVO {
     this.video,
     this.voteAverage,
     this.voteCount, {
-    this.isPopular,
-    this.isNowPlaying,
-    this.isTopRated,
+    this.isPopular = false,
+    this.isNowPlaying = false,
+    this.isTopRated = false,
   });
 
   factory MovieVO.fromJson(Map<String, dynamic> json) =>
