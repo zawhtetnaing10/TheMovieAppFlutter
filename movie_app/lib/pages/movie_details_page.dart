@@ -22,7 +22,7 @@ class MovieDetailsPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MovieDetailsBloc(movieId),
       child: Scaffold(
-        body: Selector<MovieDetailsBloc, MovieVO>(
+        body: Selector<MovieDetailsBloc, MovieVO?>(
           selector: (context, bloc) => bloc.mMovie,
           builder: (context, movie, child) => Container(
             color: HOME_SCREEN_BACKGROUND_COLOR,
@@ -43,7 +43,7 @@ class MovieDetailsPage extends StatelessWidget {
                               child: TrailerSection(movie),
                             ),
                             SizedBox(height: MARGIN_LARGE),
-                            Selector<MovieDetailsBloc, List<CreditVO>>(
+                            Selector<MovieDetailsBloc, List<CreditVO>?>(
                               selector: (context, bloc) => bloc.mActorsList,
                               builder: (context, actorList, child) =>
                                   ActorsAndCreatorsSectionView(
@@ -61,7 +61,7 @@ class MovieDetailsPage extends StatelessWidget {
                               child: AboutFilmSectionView(movie),
                             ),
                             SizedBox(height: MARGIN_LARGE),
-                            Selector<MovieDetailsBloc, List<CreditVO>>(
+                            Selector<MovieDetailsBloc, List<CreditVO>?>(
                                 selector: (context, bloc) => bloc.mCreatorsList,
                                 builder: (context, creatorsList, child) {
                                   return (creatorsList != null &&
@@ -300,9 +300,8 @@ class StoryLineView extends StatelessWidget {
 
 class MovieTimeAndGenreView extends StatelessWidget {
   const MovieTimeAndGenreView({
-    Key key,
-    @required this.genreList,
-  }) : super(key: key);
+    required this.genreList,
+  });
 
   final List<String> genreList;
 
@@ -530,10 +529,6 @@ class MovieDetailsYearView extends StatelessWidget {
 }
 
 class SearchButtonView extends StatelessWidget {
-  const SearchButtonView({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Icon(

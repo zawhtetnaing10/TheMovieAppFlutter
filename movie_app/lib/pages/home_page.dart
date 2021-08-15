@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Selector<HomeBloc, List<MovieVO>>(
+                Selector<HomeBloc, List<MovieVO>?>(
                   selector: (context, bloc) => bloc.mPopularMoviesList,
                   builder: (context, popularMovieList, child) =>
                       BannerSectionView(
@@ -62,8 +62,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: MARGIN_LARGE),
-                Selector<HomeBloc, List<MovieVO>>(
-                  selector: (context, bloc) => bloc.mNowPlayingMovieList,
+                Selector<HomeBloc, List<MovieVO>?>(
+                  selector: (context, bloc) => bloc.mNowPlayingMovieList ?? [],
                   builder: (context, nowPlayingMovieList, child) =>
                       BestPopularMoviesAndSerialsSectionView(
                     (movieId) =>
@@ -75,13 +75,13 @@ class HomePage extends StatelessWidget {
                 CheckMovieShowTimesSectionView(),
                 SizedBox(height: MARGIN_LARGE),
                 Selector<HomeBloc, List<GenreVO>>(
-                  selector: (context, bloc) => bloc.mGenreList,
+                  selector: (context, bloc) => bloc.mGenreList ?? [],
                   builder: (context, genreList, child) =>
                       Selector<HomeBloc, List<MovieVO>>(
-                    selector: (context, bloc) => bloc.mMoviesByGenreList,
+                    selector: (context, bloc) => bloc.mMoviesByGenreList ?? [],
                     builder: (context, moviesByGenreList, child) =>
                         GenreSectionView(
-                      genreList: genreList ?? [],
+                      genreList: genreList,
                       onTapMovie: (movieId) =>
                           _navigateToMovieDetailsScreen(context, movieId),
                       onTapGenre: (genreId) {
@@ -95,13 +95,13 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: MARGIN_LARGE),
                 Selector<HomeBloc, List<MovieVO>>(
-                  selector: (context, bloc) => bloc.mShowCaseMovieList,
+                  selector: (context, bloc) => bloc.mShowCaseMovieList ?? [],
                   builder: (context, showCaseMovieList, child) =>
                       ShowcasesSection(showCaseMovieList),
                 ),
                 SizedBox(height: MARGIN_LARGE),
                 Selector<HomeBloc, List<ActorVO>>(
-                  selector: (context, bloc) => bloc.mActors,
+                  selector: (context, bloc) => bloc.mActors ?? [],
                   builder: (context, actors, child) =>
                       ActorsAndCreatorsSectionView(
                     BEST_ACTORS_TITLE,
@@ -128,16 +128,16 @@ class HomePage extends StatelessWidget {
 }
 
 class GenreSectionView extends StatelessWidget {
-  final List<GenreVO> genreList;
-  final List<MovieVO> mMoviesByGenreList;
+  final List<GenreVO>? genreList;
+  final List<MovieVO>? mMoviesByGenreList;
   final Function(int) onTapMovie;
   final Function(int) onTapGenre;
 
   GenreSectionView({
     this.genreList,
     this.mMoviesByGenreList,
-    this.onTapMovie,
-    this.onTapGenre,
+    required this.onTapMovie,
+    required this.onTapGenre,
   });
 
   @override
@@ -154,18 +154,19 @@ class GenreSectionView extends StatelessWidget {
                   length: genreList?.length ?? 0,
                   child: TabBar(
                     onTap: (index) {
-                      this.onTapGenre(genreList[index].id);
+                      this.onTapGenre(genreList?[index].id ?? 0);
                     },
                     isScrollable: true,
                     indicatorColor: PLAY_BUTTON_COLOR,
                     unselectedLabelColor: HOME_SCREEN_LIST_TITLE_COLOR,
                     tabs: genreList
-                        .map(
-                          (genre) => Tab(
-                            child: Text(genre.name),
-                          ),
-                        )
-                        .toList(),
+                            ?.map(
+                              (genre) => Tab(
+                                child: Text(genre.name),
+                              ),
+                            )
+                            .toList() ??
+                        [],
                   ),
                 ),
               ),
@@ -179,7 +180,7 @@ class GenreSectionView extends StatelessWidget {
                   (movieId) {
                     onTapMovie(movieId);
                   },
-                  movieList: mMoviesByGenreList,
+                  movieList: mMoviesByGenreList ?? [],
                 ),
               ),
             ],
@@ -267,7 +268,7 @@ class ShowcasesSection extends StatelessWidget {
 
 class BestPopularMoviesAndSerialsSectionView extends StatelessWidget {
   final Function(int) onTapMovie;
-  final List<MovieVO> mNowPlayingMovieList;
+  final List<MovieVO>? mNowPlayingMovieList;
 
   BestPopularMoviesAndSerialsSectionView(
       this.onTapMovie, this.mNowPlayingMovieList);
@@ -295,7 +296,7 @@ class BestPopularMoviesAndSerialsSectionView extends StatelessWidget {
 
 class HorizontalMovieListView extends StatelessWidget {
   final Function(int) onTapMovie;
-  final List<MovieVO> movieList;
+  final List<MovieVO>? movieList;
 
   HorizontalMovieListView(this.onTapMovie, {this.movieList});
 
@@ -307,13 +308,13 @@ class HorizontalMovieListView extends StatelessWidget {
           ? ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: MARGIN_MEDIUM_2),
-              itemCount: movieList.length,
+              itemCount: movieList?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
                 return MovieView(
                   (movieId) {
                     this.onTapMovie(movieId);
                   },
-                  movieList[index],
+                  movieList?[index],
                 );
               },
             )
@@ -325,7 +326,7 @@ class HorizontalMovieListView extends StatelessWidget {
 }
 
 class BannerSectionView extends StatefulWidget {
-  final List<MovieVO> mPopularMovies;
+  final List<MovieVO>? mPopularMovies;
 
   BannerSectionView({this.mPopularMovies});
 
@@ -338,7 +339,7 @@ class _BannerSectionViewState extends State<BannerSectionView> {
 
   @override
   Widget build(BuildContext context) {
-    return (widget.mPopularMovies.isNotEmpty)
+    return (widget.mPopularMovies?.isNotEmpty ?? false)
         ? Column(
             children: [
               Container(
@@ -350,16 +351,17 @@ class _BannerSectionViewState extends State<BannerSectionView> {
                       });
                     },
                     children: widget.mPopularMovies
-                        .map(
-                          (popularMovie) => BannerView(
-                            mMovie: popularMovie,
-                          ),
-                        )
-                        .toList()),
+                            ?.map(
+                              (popularMovie) => BannerView(
+                                mMovie: popularMovie,
+                              ),
+                            )
+                            .toList() ??
+                        []),
               ),
               SizedBox(height: MARGIN_MEDIUM_2),
               DotsIndicator(
-                dotsCount: widget.mPopularMovies.length ?? 1,
+                dotsCount: widget.mPopularMovies?.length ?? 1,
                 position: _position,
                 decorator: DotsDecorator(
                   color: HOME_SCREEN_BANNER_DOTS_INACTIVE_COLOR,

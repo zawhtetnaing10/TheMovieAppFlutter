@@ -6,7 +6,7 @@ import 'package:movie_app/widgets/rating_view.dart';
 
 class MovieView extends StatelessWidget {
   final Function(int) onTapMovie;
-  final MovieVO mMovie;
+  final MovieVO? mMovie;
 
   MovieView(this.onTapMovie, this.mMovie);
 
@@ -20,17 +20,17 @@ class MovieView extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              onTapMovie(mMovie.id);
+              onTapMovie(mMovie?.id ?? 0);
             },
             child: Image.network(
-              "$IMAGE_BASE_URL${mMovie.posterPath}",
+              "$IMAGE_BASE_URL${mMovie?.posterPath}",
               height: 200,
               fit: BoxFit.cover,
             ),
           ),
           SizedBox(height: MARGIN_MEDIUM),
           Text(
-            mMovie.title,
+            mMovie?.title ?? "",
             style: TextStyle(
               color: Colors.white,
               fontSize: TEXT_REGULAR_2X,
