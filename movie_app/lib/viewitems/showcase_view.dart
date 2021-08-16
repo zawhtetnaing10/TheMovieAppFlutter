@@ -36,7 +36,7 @@ class ShowCaseView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    mShowCaseMovie.title,
+                    mShowCaseMovie.title ?? "",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: TEXT_REGULAR_3X,
@@ -44,7 +44,7 @@ class ShowCaseView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: MARGIN_MEDIUM),
-                  TitleText(mShowCaseMovie.releaseDate)
+                  TitleText(mShowCaseMovie?.releaseDate ?? "")
                 ],
               ),
             ),

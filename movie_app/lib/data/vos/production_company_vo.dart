@@ -15,15 +15,15 @@ class ProductionCompanyVO {
 
   @JsonKey(name: "logo_path")
   @HiveField(1)
-  String logoPath;
+  String? logoPath;
 
   @JsonKey(name: "name")
   @HiveField(2)
-  String name;
+  String? name;
 
   @JsonKey(name: "origin_country")
   @HiveField(3)
-  String originCountry;
+  String? originCountry;
 
   ProductionCompanyVO(this.id, this.logoPath, this.name, this.originCountry);
 

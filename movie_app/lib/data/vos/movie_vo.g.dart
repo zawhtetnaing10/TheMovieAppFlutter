@@ -17,35 +17,35 @@ class MovieVOAdapter extends TypeAdapter<MovieVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MovieVO(
-      fields[0] as bool,
-      fields[1] as String,
-      (fields[2] as List).cast<int>(),
-      fields[3] as CollectionVO,
-      fields[4] as double,
-      (fields[5] as List).cast<GenreVO>(),
-      fields[6] as String,
+      fields[0] as bool?,
+      fields[1] as String?,
+      (fields[2] as List?)?.cast<int>(),
+      fields[3] as CollectionVO?,
+      fields[4] as double?,
+      (fields[5] as List?)?.cast<GenreVO>(),
+      fields[6] as String?,
       fields[7] as int,
-      fields[8] as String,
-      fields[9] as String,
-      fields[10] as String,
-      fields[11] as String,
-      fields[12] as double,
-      fields[13] as String,
-      (fields[14] as List).cast<ProductionCompanyVO>(),
-      (fields[15] as List).cast<ProductionCountryVO>(),
-      fields[16] as int,
-      fields[17] as int,
-      fields[18] as String,
-      (fields[19] as List).cast<SpokenLanguageVO>(),
-      fields[20] as String,
-      fields[21] as String,
-      fields[22] as String,
-      fields[23] as bool,
-      fields[24] as double,
-      fields[25] as int,
-      isPopular: fields[27] as bool,
-      isNowPlaying: fields[26] as bool,
-      isTopRated: fields[28] as bool,
+      fields[8] as String?,
+      fields[9] as String?,
+      fields[10] as String?,
+      fields[11] as String?,
+      fields[12] as double?,
+      fields[13] as String?,
+      (fields[14] as List?)?.cast<ProductionCompanyVO>(),
+      (fields[15] as List?)?.cast<ProductionCountryVO>(),
+      fields[16] as int?,
+      fields[17] as int?,
+      fields[18] as String?,
+      (fields[19] as List?)?.cast<SpokenLanguageVO>(),
+      fields[20] as String?,
+      fields[21] as String?,
+      fields[22] as String?,
+      fields[23] as bool?,
+      fields[24] as double?,
+      fields[25] as int?,
+      isPopular: fields[27] as bool?,
+      isNowPlaying: fields[26] as bool?,
+      isTopRated: fields[28] as bool?,
     );
   }
 
@@ -129,41 +129,43 @@ class MovieVOAdapter extends TypeAdapter<MovieVO> {
 // **************************************************************************
 
 MovieVO _$MovieVOFromJson(Map<String, dynamic> json) => MovieVO(
-      json['adult'] as bool,
-      json['backdrop_path'] as String,
-      (json['genre_ids'] as List<dynamic>).map((e) => e as int).toList(),
-      CollectionVO.fromJson(
-          json['belongs_to_collection'] as Map<String, dynamic>),
-      (json['budget'] as num).toDouble(),
-      (json['genres'] as List<dynamic>)
-          .map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
+      json['adult'] as bool?,
+      json['backdrop_path'] as String?,
+      (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      json['belongs_to_collection'] == null
+          ? null
+          : CollectionVO.fromJson(
+              json['belongs_to_collection'] as Map<String, dynamic>),
+      (json['budget'] as num?)?.toDouble(),
+      (json['genres'] as List<dynamic>?)
+          ?.map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['homepage'] as String,
+      json['homepage'] as String?,
       json['id'] as int,
-      json['imdb_id'] as String,
-      json['original_language'] as String,
-      json['original_title'] as String,
-      json['overview'] as String,
-      (json['popularity'] as num).toDouble(),
-      json['poster_path'] as String,
-      (json['production_companies'] as List<dynamic>)
-          .map((e) => ProductionCompanyVO.fromJson(e as Map<String, dynamic>))
+      json['imdb_id'] as String?,
+      json['original_language'] as String?,
+      json['original_title'] as String?,
+      json['overview'] as String?,
+      (json['popularity'] as num?)?.toDouble(),
+      json['poster_path'] as String?,
+      (json['production_companies'] as List<dynamic>?)
+          ?.map((e) => ProductionCompanyVO.fromJson(e as Map<String, dynamic>))
           .toList(),
-      (json['production_countries'] as List<dynamic>)
-          .map((e) => ProductionCountryVO.fromJson(e as Map<String, dynamic>))
+      (json['production_countries'] as List<dynamic>?)
+          ?.map((e) => ProductionCountryVO.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['revenue'] as int,
-      json['runtime'] as int,
-      json['release_date'] as String,
-      (json['spoken_languages'] as List<dynamic>)
-          .map((e) => SpokenLanguageVO.fromJson(e as Map<String, dynamic>))
+      json['revenue'] as int?,
+      json['runtime'] as int?,
+      json['release_date'] as String?,
+      (json['spoken_languages'] as List<dynamic>?)
+          ?.map((e) => SpokenLanguageVO.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['status'] as String,
-      json['tagline'] as String,
-      json['title'] as String,
-      json['video'] as bool,
-      (json['vote_average'] as num).toDouble(),
-      json['vote_count'] as int,
+      json['status'] as String?,
+      json['tagline'] as String?,
+      json['title'] as String?,
+      json['video'] as bool?,
+      (json['vote_average'] as num?)?.toDouble(),
+      json['vote_count'] as int?,
       isPopular: json['isPopular'] as bool? ?? false,
       isNowPlaying: json['isNowPlaying'] as bool? ?? false,
       isTopRated: json['isTopRated'] as bool? ?? false,

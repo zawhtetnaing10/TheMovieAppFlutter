@@ -104,35 +104,38 @@ class AboutFilmSectionView extends StatelessWidget {
         ),
         AboutFilmInfoView(
           "Original Title:",
-          mMovie.originalTitle,
+          mMovie.originalTitle ?? "",
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Type:",
-          mMovie.genres.map((genre) => genre.name).join(","),
+          mMovie.genres?.map((genre) => genre.name).join(",") ?? "",
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Production:",
-          mMovie.productionCountries.map((country) => country.name).join(","),
+          mMovie.productionCountries
+                  ?.map((country) => country.name)
+                  .join(",") ??
+              "",
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Premiere:",
-          mMovie.releaseDate,
+          mMovie.releaseDate ?? "",
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Description:",
-          mMovie.overview,
+          mMovie.overview ?? "",
         ),
       ],
     );
@@ -188,12 +191,12 @@ class TrailerSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MovieTimeAndGenreView(
-          genreList: mMovie.genres.map((genre) => genre.name).toList(),
+          genreList: mMovie.genres?.map((genre) => genre.name).toList() ?? [],
         ),
         SizedBox(
           height: MARGIN_MEDIUM_3,
         ),
-        StoryLineView(mMovie.overview),
+        StoryLineView(mMovie?.overview ?? ""),
         SizedBox(height: MARGIN_MEDIUM_2),
         Row(
           children: [
@@ -394,7 +397,7 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
             background: Stack(
               children: [
                 Positioned.fill(
-                  child: MovieDetailsAppBarImageView(mMovie.posterPath),
+                  child: MovieDetailsAppBarImageView(mMovie.posterPath ?? ""),
                 ),
                 Positioned.fill(
                   child: GradientView(),
@@ -454,7 +457,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
       children: [
         Row(
           children: [
-            MovieDetailsYearView(mMovie.releaseDate.substring(0, 4)),
+            MovieDetailsYearView(mMovie.releaseDate?.substring(0, 4) ?? ""),
             Spacer(),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -487,7 +490,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
         ),
         SizedBox(height: MARGIN_MEDIUM),
         Text(
-          mMovie.title,
+          mMovie.title ?? "",
           style: TextStyle(
             color: Colors.white,
             fontSize: TEXT_HEADING_2X,
