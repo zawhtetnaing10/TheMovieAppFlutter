@@ -2,14 +2,14 @@ import 'package:hive/hive.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/persistence/hive_constants.dart';
 
-class GenreDao {
-  static final GenreDao _singleton = GenreDao._internal();
+class GenreDaoImpl {
+  static final GenreDaoImpl _singleton = GenreDaoImpl._internal();
 
-  factory GenreDao() {
+  factory GenreDaoImpl() {
     return _singleton;
   }
 
-  GenreDao._internal();
+  GenreDaoImpl._internal();
 
   void saveAllGenres(List<GenreVO> genreList) async {
     Map<int, GenreVO> actorMap = Map.fromIterable(genreList,

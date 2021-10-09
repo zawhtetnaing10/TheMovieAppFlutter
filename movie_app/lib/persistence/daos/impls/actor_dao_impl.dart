@@ -2,14 +2,14 @@ import 'package:hive/hive.dart';
 import 'package:movie_app/data/vos/actor_vo.dart';
 import 'package:movie_app/persistence/hive_constants.dart';
 
-class ActorDao {
-  static final ActorDao _singleton = ActorDao._internal();
+class ActorDaoImpl {
+  static final ActorDaoImpl _singleton = ActorDaoImpl._internal();
 
-  factory ActorDao() {
+  factory ActorDaoImpl() {
     return _singleton;
   }
 
-  ActorDao._internal();
+  ActorDaoImpl._internal();
 
   void saveAllActors(List<ActorVO> actorList) async {
     Map<int, ActorVO> actorMap = Map.fromIterable(actorList,
