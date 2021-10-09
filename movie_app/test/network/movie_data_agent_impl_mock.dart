@@ -6,7 +6,7 @@ import 'package:movie_app/network/dataagents/movie_data_agent.dart';
 
 import '../mock_data/mock_data.dart';
 
-class MovieDataAgentImpl extends MovieDataAgent {
+class MovieDataAgentImplMock extends MovieDataAgent {
   @override
   Future<List<ActorVO>?>? getActors(int page) {}
 

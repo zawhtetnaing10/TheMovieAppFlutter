@@ -27,6 +27,8 @@ class MovieModelImpl extends MovieModel {
   GenreDaoImpl mGenreDao = GenreDaoImpl();
   ActorDaoImpl mActorDao = ActorDaoImpl();
 
+  void setTestDaosAndDataAgents() {}
+
   // Network
   @override
   void getNowPlayingMovies(int page) {
