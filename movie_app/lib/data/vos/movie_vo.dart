@@ -125,6 +125,8 @@ class MovieVO {
   @HiveField(28)
   bool isTopRated;
 
+  bool isSelected;
+
   MovieVO(
     this.adult,
     this.backDropPath,
