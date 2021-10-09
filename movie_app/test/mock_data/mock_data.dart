@@ -1,0 +1,196 @@
+import 'package:movie_app/data/vos/actor_vo.dart';
+import 'package:movie_app/data/vos/credit_vo.dart';
+import 'package:movie_app/data/vos/genre_vo.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
+
+List<MovieVO> getMockMoviesForTest() {
+  return [
+    MovieVO(
+      false,
+      "/t9nyF3r0WAlJ7Kr6xcRYI4jr9jm.jpg",
+      [
+        878,
+        28,
+      ],
+      null,
+      null,
+      null,
+      null,
+      580489,
+      null,
+      "en",
+      "Venom: Let There Be Carnage",
+      "After finding a host body in investigative reporter Eddie Brock, the alien symbiote must face a new enemy, Carnage, the alter ego of serial killer Cletus Kasady.",
+      10241.636,
+      "/rjkmN1dniUHVYAtwuV3Tji7FsDO.jpg",
+      null,
+      null,
+      null,
+      null,
+      "2021-09-30",
+      null,
+      null,
+      null,
+      "Venom: Let There Be Carnage",
+      false,
+      7.5,
+      292,
+      isNowPlaying: true,
+      isPopular: false,
+      isTopRated: false,
+    ),
+    MovieVO(
+        false,
+        "/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg",
+        [
+          35,
+          28,
+          12,
+          878,
+        ],
+        null,
+        null,
+        null,
+        null,
+        550988,
+        null,
+        "en",
+        "Free Guy",
+        "A bank teller called Guy realizes he is a background character in an open world video game called Free City that will soon go offline.",
+        7639.202,
+        "/xmbU4JTUm8rsdtn7Y3Fcm30GpeT.jpg",
+        null,
+        null,
+        null,
+        null,
+        "2021-08-11",
+        null,
+        null,
+        null,
+        "Free Guy",
+        false,
+        7.9,
+        2340,
+        isPopular: true,
+        isTopRated: false,
+        isNowPlaying: false),
+    MovieVO(
+      false,
+      "/aO9Nnv9GdwiPdkNO79TISlQ5bbG.jpg",
+      [
+        28,
+        12,
+      ],
+      null,
+      null,
+      null,
+      null,
+      568620,
+      null,
+      "en",
+      "Snake Eyes: G.I. Joe Origins",
+      "After saving the life of their heir apparent, tenacious loner Snake Eyes is welcomed into an ancient Japanese clan called the Arashikage where he is taught the ways of the ninja warrior. But, when secrets from his past are revealed, Snake Eyes' honor and allegiance will be tested – even if that means losing the trust of those closest to him.",
+      3530.788,
+      "/uIXF0sQGXOxQhbaEaKOi2VYlIL0.jpg",
+      null,
+      null,
+      null,
+      null,
+      "2021-07-22",
+      null,
+      null,
+      null,
+      "Snake Eyes: G.I. Joe Origins",
+      false,
+      6.9,
+      595,
+      isTopRated: true,
+      isNowPlaying: false,
+      isPopular: false,
+    )
+  ];
+}
+
+List<ActorVO> getMockActors() {
+  return [
+    ActorVO(
+      id: 169337,
+      adult: false,
+      knownFor: [],
+      popularity: 488.639,
+      name: "Katherine LaNasa",
+      profilePath: "/a1T5Smn7sCEtV8NHvTa5WaxgOML.jpg",
+    ),
+    ActorVO(
+      id: 2564437,
+      adult: false,
+      knownFor: [],
+      popularity: 75.172,
+      name: "Janaina Liesenfeld",
+      profilePath: "/1AGg7Rh5a2wAIsHQYl0IGtrddW9.jpg",
+    ),
+    ActorVO(
+      id: 2200531,
+      adult: false,
+      knownFor: [],
+      popularity: 75.172,
+      name: "Chae Kyung-sun",
+      profilePath: "/1AGg7Rh5a2wAIsHQYl0IGtrddW9.jpg",
+    )
+  ];
+}
+
+List<GenreVO> getMockGenres() {
+  return [
+    GenreVO(id: 1, name: "Action"),
+    GenreVO(id: 2, name: "Adventure"),
+    GenreVO(id: 3, name: "Comedy"),
+  ];
+}
+
+List<CreditVO> getMockCredits() {
+  return [
+    CreditVO(
+      false,
+      1,
+      169337,
+      "Acting",
+      "Tom Cruise",
+      9.9,
+      2,
+      "Spy",
+      "3",
+      4,
+      "Tom Cruise",
+      "/1AGg7Rh5a2wAIsHQYl0IGtrddW9.jpg",
+    ),
+    CreditVO(
+      false,
+      2,
+      13345,
+      "Creating",
+      "Alfred Hitchcock",
+      9.9,
+      3,
+      "Director",
+      "6",
+      6,
+      "Alfred Hitchcock",
+      "/a1T5Smn7sCEtV8NHvTa5WaxgOML.jpg",
+    ),
+    CreditVO(
+      false,
+      3,
+      14335,
+      "Acting",
+      "Emma Watson",
+      9.9,
+      6,
+      "Wizard",
+      "5",
+      9,
+      "Emma Watson",
+      "/a1T5Smn7sCEtV8NHvTa5WaxgOML.jpg",
+    ),
+  ];
+}
