@@ -9,12 +9,12 @@ part 'date_vo.g.dart';
 class DateVO {
   @JsonKey(name: "maximum")
   @HiveField(0)
-  String maximum;
+  String? maximum;
   @JsonKey(name: "minimum")
   @HiveField(1)
-  String minimum;
+  String? minimum;
 
-  DateVO({required this.maximum, required this.minimum});
+  DateVO({this.maximum, this.minimum});
 
   factory DateVO.fromJson(Map<String, dynamic> json) => _$DateVOFromJson(json);
 

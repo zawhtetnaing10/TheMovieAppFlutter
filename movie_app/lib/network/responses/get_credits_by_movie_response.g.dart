@@ -10,8 +10,8 @@ GetCreditsByMovieResponse _$GetCreditsByMovieResponseFromJson(
         Map<String, dynamic> json) =>
     GetCreditsByMovieResponse(
       json['id'] as int,
-      (json['cast'] as List<dynamic>)
-          .map((e) => CreditVO.fromJson(e as Map<String, dynamic>))
+      (json['cast'] as List<dynamic>?)
+          ?.map((e) => CreditVO.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

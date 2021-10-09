@@ -17,8 +17,8 @@ class DateVOAdapter extends TypeAdapter<DateVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DateVO(
-      maximum: fields[0] as String,
-      minimum: fields[1] as String,
+      maximum: fields[0] as String?,
+      minimum: fields[1] as String?,
     );
   }
 
@@ -48,8 +48,8 @@ class DateVOAdapter extends TypeAdapter<DateVO> {
 // **************************************************************************
 
 DateVO _$DateVOFromJson(Map<String, dynamic> json) => DateVO(
-      maximum: json['maximum'] as String,
-      minimum: json['minimum'] as String,
+      maximum: json['maximum'] as String?,
+      minimum: json['minimum'] as String?,
     );
 
 Map<String, dynamic> _$DateVOToJson(DateVO instance) => <String, dynamic>{

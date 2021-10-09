@@ -21,5 +21,6 @@ abstract class MovieModel {
   Stream<List<MovieVO>> getPopularMoviesFromDatabase();
   Future<List<GenreVO>> getGenresFromDatabase();
   Future<List<ActorVO>> getAllActorsFromDatabase();
+
   Future<MovieVO?>? getMovieDetailsFromDatabase(int movieId);
 }

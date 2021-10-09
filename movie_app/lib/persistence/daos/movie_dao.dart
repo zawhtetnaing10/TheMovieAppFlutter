@@ -23,12 +23,12 @@ class MovieDao {
     }
   }
 
-  List<MovieVO> getAllMovies() {
-    return getMovieBox().values.toList();
-  }
-
   MovieVO? getMovieById(int movieId) {
     return getMovieBox().get(movieId);
+  }
+
+  List<MovieVO> getAllMovies() {
+    return getMovieBox().values.toList();
   }
 
   /// Reactive Programming

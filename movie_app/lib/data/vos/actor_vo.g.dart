@@ -21,8 +21,8 @@ class ActorVOAdapter extends TypeAdapter<ActorVO> {
       id: fields[1] as int,
       knownFor: (fields[2] as List?)?.cast<MovieVO>(),
       popularity: fields[3] as double?,
-      name: fields[10] as String,
-      profilePath: fields[11] as String,
+      name: fields[10] as String?,
+      profilePath: fields[11] as String?,
     );
   }
 
@@ -66,8 +66,8 @@ ActorVO _$ActorVOFromJson(Map<String, dynamic> json) => ActorVO(
           ?.map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
           .toList(),
       popularity: (json['popularity'] as num?)?.toDouble(),
-      name: json['name'] as String,
-      profilePath: json['profile_path'] as String,
+      name: json['name'] as String?,
+      profilePath: json['profile_path'] as String?,
     );
 
 Map<String, dynamic> _$ActorVOToJson(ActorVO instance) => <String, dynamic>{

@@ -9,6 +9,7 @@ import 'package:movie_app/resources/strings.dart';
 import 'package:movie_app/widgets/actors_and_creators_section_view.dart';
 import 'package:movie_app/widgets/gradient_view.dart';
 import 'package:movie_app/widgets/rating_view.dart';
+import 'package:movie_app/widgets/title_and_horizontal_movie_list_view.dart';
 import 'package:movie_app/widgets/title_text.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +51,7 @@ class MovieDetailsPage extends StatelessWidget {
                                 MOVIE_DETAILS_SCREEN_ACTORS_TITLE,
                                 "",
                                 seeMoreButtonVisibility: false,
-                                mActorsList: actorList ?? [],
+                                mActorsList: actorList,
                               ),
                             ),
                             SizedBox(height: MARGIN_LARGE),
@@ -69,10 +70,26 @@ class MovieDetailsPage extends StatelessWidget {
                                       ? ActorsAndCreatorsSectionView(
                                           MOVIE_DETAILS_SCREEN_CREATORS_TITLE,
                                           MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
-                                          mActorsList: creatorsList ?? [],
+                                          mActorsList: creatorsList,
                                         )
                                       : Container();
-                                })
+                                }),
+                            SizedBox(height: MARGIN_LARGE),
+                            Selector<MovieDetailsBloc, List<MovieVO>?>(
+                              selector: (context, bloc) => bloc.mRelatedMovies,
+                              builder: (context, relatedMovies, child) =>
+                                  TitleAndHorizontalMovieListView(
+                                (movieId) => _navigateToMovieDetailsScreen(
+                                    context, movieId),
+                                relatedMovies,
+                                title: MOVIE_DETAILS_SCREEN_RELATED_MOVIES,
+                                onListEndReached: () {
+                                  // var bloc = Provider.of<HomeBloc>(
+                                  //     context, listen: false);
+                                  // bloc.onNowPlayingMovieListEndReached();
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       )
@@ -83,6 +100,15 @@ class MovieDetailsPage extends StatelessWidget {
                   ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _navigateToMovieDetailsScreen(BuildContext context, int movieId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailsPage(movieId),
       ),
     );
   }

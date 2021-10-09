@@ -5,15 +5,10 @@ part 'get_actors_response.g.dart';
 
 @JsonSerializable()
 class GetActorsResponse {
-  @JsonKey(name: 'code')
-  int code;
-  @JsonKey(name: 'message')
-  String message;
   @JsonKey(name: 'results')
   List<ActorVO>? results;
 
-  GetActorsResponse(
-      {required this.code, required this.message, required this.results});
+  GetActorsResponse({this.results});
 
   factory GetActorsResponse.fromJson(Map<String, dynamic> json) =>
       _$GetActorsResponseFromJson(json);

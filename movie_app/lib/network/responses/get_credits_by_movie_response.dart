@@ -8,7 +8,7 @@ class GetCreditsByMovieResponse {
   @JsonKey(name: "id")
   int id;
   @JsonKey(name: "cast")
-  List<CreditVO> cast;
+  List<CreditVO>? cast;
 
   GetCreditsByMovieResponse(this.id, this.cast);
 

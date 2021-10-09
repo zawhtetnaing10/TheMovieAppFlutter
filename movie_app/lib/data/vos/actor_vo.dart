@@ -31,8 +31,8 @@ class ActorVO extends BaseActorVO {
     required this.id,
     this.knownFor,
     this.popularity,
-    required String name,
-    required String profilePath,
+    String? name,
+    String? profilePath,
   }) : super(name, profilePath);
 
   factory ActorVO.fromJson(Map<String, dynamic> json) =>
