@@ -3,19 +3,19 @@ import 'dart:async';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/persistence/daos/movie_dao.dart';
 
+import '../mock_data/mock_data.dart';
+
 class MovieDaoImplMock extends MovieDao {
   Map<int, MovieVO> moviesInDatabaseMock = {};
-  StreamController<void> getAllMoviesEventStreamControllerMock =
-      StreamController();
 
   @override
   List<MovieVO> getAllMovies() {
-    return moviesInDatabaseMock.values.toList();
+    return getMockMoviesForTest();
   }
 
   @override
   Stream<void> getAllMoviesEventStream() {
-    return getAllMoviesEventStreamControllerMock.stream;
+    return Stream<void>.value(null);
   }
 
   @override
@@ -27,9 +27,9 @@ class MovieDaoImplMock extends MovieDao {
 
   @override
   List<MovieVO> getNowPlayingMovies() {
-    if ((getAllMovies().isNotEmpty)) {
-      return getAllMovies()
-          .where((element) => element.isPopular ?? false)
+    if ((getMockMoviesForTest().isNotEmpty)) {
+      return getMockMoviesForTest()
+          .where((element) => element.isNowPlaying ?? false)
           .toList();
     } else {
       return [];
@@ -38,34 +38,35 @@ class MovieDaoImplMock extends MovieDao {
 
   @override
   Stream<List<MovieVO>> getNowPlayingMoviesStream() {
-    return Stream.value(getAllMovies()
+    return Stream.value(getMockMoviesForTest()
         .where((element) => element?.isNowPlaying ?? false)
         .toList());
   }
 
   @override
   List<MovieVO> getPopularMovies() {
-    if (getAllMovies() != null && (getAllMovies().isNotEmpty ?? false)) {
-      return getAllMovies()
+    if (getMockMoviesForTest() != null &&
+        (getMockMoviesForTest().isNotEmpty ?? false)) {
+      return getMockMoviesForTest()
           .where((element) => element?.isPopular ?? false)
           .toList();
     } else {
       return [];
     }
-    ;
   }
 
   @override
   Stream<List<MovieVO>> getPopularMoviesStream() {
-    return Stream.value(getAllMovies()
+    return Stream.value(getMockMoviesForTest()
         .where((element) => element?.isPopular ?? false)
         .toList());
   }
 
   @override
   List<MovieVO> getTopRatedMovies() {
-    if (getAllMovies() != null && (getAllMovies().isNotEmpty ?? false)) {
-      return getAllMovies()
+    if (getMockMoviesForTest() != null &&
+        (getMockMoviesForTest().isNotEmpty ?? false)) {
+      return getMockMoviesForTest()
           .where((element) => element?.isTopRated ?? false)
           .toList();
     } else {
@@ -75,7 +76,7 @@ class MovieDaoImplMock extends MovieDao {
 
   @override
   Stream<List<MovieVO>> getTopRatedMoviesStream() {
-    return Stream.value(getAllMovies()
+    return Stream.value(getMockMoviesForTest()
         .where((element) => element?.isTopRated ?? false)
         .toList());
   }
@@ -85,7 +86,6 @@ class MovieDaoImplMock extends MovieDao {
     movies.forEach((movie) {
       moviesInDatabaseMock[movie.id] = movie;
     });
-    getAllMoviesEventStreamControllerMock.sink.add(null);
   }
 
   @override
@@ -93,9 +93,5 @@ class MovieDaoImplMock extends MovieDao {
     if (movie != null) {
       moviesInDatabaseMock[movie.id] = movie;
     }
-  }
-
-  void closeStreamController() {
-    getAllMoviesEventStreamControllerMock.close();
   }
 }

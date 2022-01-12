@@ -60,6 +60,35 @@ class CreditVO extends BaseActorVO {
 
   Map<String, dynamic> toJson() => _$CreditVOToJson(this);
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CreditVO &&
+          runtimeType == other.runtimeType &&
+          adult == other.adult &&
+          gender == other.gender &&
+          id == other.id &&
+          knownForDepartment == other.knownForDepartment &&
+          originalName == other.originalName &&
+          popularity == other.popularity &&
+          castId == other.castId &&
+          character == other.character &&
+          creditId == other.creditId &&
+          order == other.order;
+
+  @override
+  int get hashCode =>
+      adult.hashCode ^
+      gender.hashCode ^
+      id.hashCode ^
+      knownForDepartment.hashCode ^
+      originalName.hashCode ^
+      popularity.hashCode ^
+      castId.hashCode ^
+      character.hashCode ^
+      creditId.hashCode ^
+      order.hashCode;
+
   bool isActor() {
     return knownForDepartment == KNOWN_FOR_DEPARTMENT_ACTING;
   }

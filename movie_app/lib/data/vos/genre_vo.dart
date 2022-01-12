@@ -17,6 +17,17 @@ class GenreVO {
 
   GenreVO({required this.id, required this.name});
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GenreVO &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
+
   factory GenreVO.fromJson(Map<String, dynamic> json) =>
       _$GenreVOFromJson(json);
 

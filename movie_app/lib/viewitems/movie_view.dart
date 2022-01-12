@@ -24,17 +24,23 @@ class MovieView extends StatelessWidget {
             },
             child: Image.network(
               "$IMAGE_BASE_URL${mMovie?.posterPath}",
+              key: Key("movie_image"),
               height: 200,
               fit: BoxFit.cover,
             ),
           ),
           SizedBox(height: MARGIN_MEDIUM),
-          Text(
-            mMovie?.title ?? "",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: TEXT_REGULAR_2X,
-              fontWeight: FontWeight.w600,
+          GestureDetector(
+            onTap: () {
+              onTapMovie(mMovie?.id ?? 0);
+            },
+            child: Text(
+              mMovie?.title ?? "",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: TEXT_REGULAR_2X,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           SizedBox(height: MARGIN_MEDIUM),

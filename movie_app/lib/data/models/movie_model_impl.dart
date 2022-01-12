@@ -4,9 +4,12 @@ import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/network/dataagents/movie_data_agent.dart';
 import 'package:movie_app/network/dataagents/retrofit_data_agent_impl.dart';
+import 'package:movie_app/persistence/daos/actor_dao.dart';
+import 'package:movie_app/persistence/daos/genre_dao.dart';
 import 'package:movie_app/persistence/daos/impls/actor_dao_impl.dart';
 import 'package:movie_app/persistence/daos/impls/genre_dao_impl.dart';
 import 'package:movie_app/persistence/daos/impls/movie_dao_impl.dart';
+import 'package:movie_app/persistence/daos/movie_dao.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import 'movie_model.dart';
@@ -23,11 +26,22 @@ class MovieModelImpl extends MovieModel {
   MovieModelImpl._internal();
 
   /// Daos
-  MovieDaoImpl mMovieDao = MovieDaoImpl();
-  GenreDaoImpl mGenreDao = GenreDaoImpl();
-  ActorDaoImpl mActorDao = ActorDaoImpl();
+  MovieDao mMovieDao = MovieDaoImpl();
+  GenreDao mGenreDao = GenreDaoImpl();
+  ActorDao mActorDao = ActorDaoImpl();
 
-  void setTestDaosAndDataAgents() {}
+  /// For Testing Purposes
+  void setDaosAndDataAgents(
+    MovieDao movieDao,
+    ActorDao actorDao,
+    GenreDao genreDao,
+    MovieDataAgent dataAgent,
+  ) {
+    mMovieDao = movieDao;
+    mActorDao = actorDao;
+    mGenreDao = genreDao;
+    mDataAgent = dataAgent;
+  }
 
   // Network
   @override

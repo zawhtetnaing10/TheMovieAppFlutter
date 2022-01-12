@@ -7,7 +7,6 @@ import 'package:movie_app/resources/colors.dart';
 import 'package:movie_app/resources/dimens.dart';
 import 'package:movie_app/resources/strings.dart';
 import 'package:movie_app/widgets/actors_and_creators_section_view.dart';
-import 'package:movie_app/widgets/gradient_view.dart';
 import 'package:movie_app/widgets/rating_view.dart';
 import 'package:movie_app/widgets/title_and_horizontal_movie_list_view.dart';
 import 'package:movie_app/widgets/title_text.dart';
@@ -425,9 +424,9 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
                 Positioned.fill(
                   child: MovieDetailsAppBarImageView(mMovie.posterPath ?? ""),
                 ),
-                Positioned.fill(
-                  child: GradientView(),
-                ),
+                // Positioned.fill(
+                //   child: GradientView(),
+                // ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
@@ -456,12 +455,25 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
                     padding: EdgeInsets.only(
                       left: MARGIN_MEDIUM_2,
                       right: MARGIN_MEDIUM_2,
-                      bottom: MARGIN_LARGE,
+                      bottom: MARGIN_XLARGE,
                     ),
                     child: MovieDetailsAppBarInfoView(mMovie),
                   ),
                 ),
               ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: MARGIN_LARGE,
+              decoration: BoxDecoration(
+                color: HOME_SCREEN_BACKGROUND_COLOR,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(MARGIN_LARGE),
+                  topRight: Radius.circular(MARGIN_LARGE),
+                ),
+              ),
             ),
           ),
         ],

@@ -26,6 +26,14 @@ class ActorVO extends BaseActorVO {
   @HiveField(3)
   double? popularity;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ActorVO && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
   ActorVO({
     this.adult,
     required this.id,

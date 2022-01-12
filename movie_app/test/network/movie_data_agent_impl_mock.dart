@@ -8,7 +8,9 @@ import '../mock_data/mock_data.dart';
 
 class MovieDataAgentImplMock extends MovieDataAgent {
   @override
-  Future<List<ActorVO>?>? getActors(int page) {}
+  Future<List<ActorVO>?>? getActors(int page) {
+    return Future.value(getMockActors());
+  }
 
   @override
   Future<List<CreditVO>?>? getCreditsByMovie(int movieId) {
