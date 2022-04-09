@@ -11,10 +11,10 @@ part 'production_country_vo.g.dart';
 class ProductionCountryVO {
   @JsonKey(name: "iso_3166_1")
   @HiveField(0)
-  String iso31661;
+  String? iso31661;
   @JsonKey(name: "name")
   @HiveField(1)
-  String name;
+  String? name;
 
   ProductionCountryVO(this.iso31661, this.name);
 

@@ -21,7 +21,7 @@ class MovieDetailsPage extends StatefulWidget {
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
-  MovieDetailsBloc _bloc;
+  late MovieDetailsBloc _bloc;
 
   @override
   void initState() {
@@ -39,16 +39,16 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: _bloc.movieStreamController.stream.asBroadcastStream(),
-        builder: (BuildContext context, AsyncSnapshot<MovieVO> snapshot) {
-          if (snapshot.hasData) {
+        stream: _bloc.movieStreamController.stream,
+        builder: (BuildContext context, AsyncSnapshot<MovieVO?> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
             return Container(
               color: HOME_SCREEN_BACKGROUND_COLOR,
               child: CustomScrollView(
                 slivers: [
                   MovieDetailsSliverAppBarView(
                     () => Navigator.pop(context),
-                    snapshot.data,
+                    snapshot.data!,
                   ),
                   SliverList(
                     delegate: SliverChildListDelegate(
@@ -57,20 +57,24 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           margin: EdgeInsets.symmetric(
                             horizontal: MARGIN_MEDIUM_2,
                           ),
-                          child: TrailerSection(snapshot.data ?? []),
+                          child: TrailerSection(snapshot.data!),
                         ),
                         SizedBox(height: MARGIN_LARGE),
                         StreamBuilder(
-                          stream: _bloc.actorsStreamController.stream
-                              .asBroadcastStream(),
+                          stream: _bloc.actorsStreamController.stream,
                           builder: (BuildContext context,
-                              AsyncSnapshot<List<CreditVO>> snapshot) {
-                            return ActorsAndCreatorsSectionView(
-                              MOVIE_DETAILS_SCREEN_ACTORS_TITLE,
-                              "",
-                              seeMoreButtonVisibility: false,
-                              mActorsList: snapshot.data,
-                            );
+                              AsyncSnapshot<List<CreditVO>?> snapshot) {
+                            return (snapshot.hasData &&
+                                    (snapshot.data?.isNotEmpty ?? false))
+                                ? ActorsAndCreatorsSectionView(
+                                    MOVIE_DETAILS_SCREEN_ACTORS_TITLE,
+                                    "",
+                                    seeMoreButtonVisibility: false,
+                                    mActorsList: snapshot.data,
+                                  )
+                                : Center(
+                                    child: CircularProgressIndicator(),
+                                  );
                           },
                         ),
                         SizedBox(height: MARGIN_LARGE),
@@ -78,24 +82,21 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           padding: EdgeInsets.symmetric(
                             horizontal: MARGIN_MEDIUM_2,
                           ),
-                          child: AboutFilmSectionView(snapshot.data),
+                          child: AboutFilmSectionView(snapshot.data!),
                         ),
                         SizedBox(height: MARGIN_LARGE),
                         StreamBuilder(
-                          stream: _bloc.creatorsStreamController.stream
-                              .asBroadcastStream(),
+                          stream: _bloc.creatorsStreamController.stream,
                           builder: (BuildContext context,
-                              AsyncSnapshot<List<CreditVO>> snapshot) {
+                              AsyncSnapshot<List<CreditVO>?> snapshot) {
                             if (snapshot.hasData &&
                                 (snapshot.data?.isNotEmpty ?? false)) {
-                              print("Snapshot has data");
                               return ActorsAndCreatorsSectionView(
                                 MOVIE_DETAILS_SCREEN_CREATORS_TITLE,
                                 MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
                                 mActorsList: snapshot.data,
                               );
                             } else {
-                              print("Snapshot does not have data");
                               return Container();
                             }
                           },
@@ -118,7 +119,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 }
 
 class AboutFilmSectionView extends StatelessWidget {
-  final MovieVO mMovie;
+  final MovieVO? mMovie;
 
   AboutFilmSectionView(this.mMovie);
 
@@ -133,35 +134,38 @@ class AboutFilmSectionView extends StatelessWidget {
         ),
         AboutFilmInfoView(
           "Original Title:",
-          mMovie.originalTitle,
+          mMovie?.originalTitle ?? "",
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Type:",
-          mMovie.genres.map((genre) => genre.name).join(","),
+          mMovie?.genres?.map((genre) => genre.name).join(",") ?? "",
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Production:",
-          mMovie.productionCountries.map((country) => country.name).join(","),
+          mMovie?.productionCountries
+                  ?.map((country) => country.name)
+                  .join(",") ??
+              "",
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Premiere:",
-          mMovie.releaseDate,
+          mMovie?.releaseDate ?? "",
         ),
         SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         AboutFilmInfoView(
           "Description:",
-          mMovie.overview,
+          mMovie?.overview ?? "",
         ),
       ],
     );
@@ -217,12 +221,13 @@ class TrailerSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MovieTimeAndGenreView(
-          genreList: mMovie.genres.map((genre) => genre.name).toList(),
+          genreList:
+              mMovie?.genres?.map((genre) => genre.name ?? "")?.toList() ?? [],
         ),
         SizedBox(
           height: MARGIN_MEDIUM_3,
         ),
-        StoryLineView(mMovie.overview),
+        StoryLineView(mMovie?.overview ?? ""),
         SizedBox(height: MARGIN_MEDIUM_2),
         Row(
           children: [
@@ -329,11 +334,10 @@ class StoryLineView extends StatelessWidget {
 
 class MovieTimeAndGenreView extends StatelessWidget {
   const MovieTimeAndGenreView({
-    Key key,
-    @required this.genreList,
-  }) : super(key: key);
+    required this.genreList,
+  });
 
-  final List<String> genreList;
+  final List<String>? genreList;
 
   @override
   Widget build(BuildContext context) {
@@ -364,7 +368,8 @@ class MovieTimeAndGenreView extends StatelessWidget {
       SizedBox(width: MARGIN_MEDIUM),
     ];
 
-    widgets.addAll(genreList.map((genre) => GenreChipView(genre)).toList());
+    widgets.addAll(
+        genreList?.map((genre) => GenreChipView(genre ?? "")).toList() ?? []);
 
     widgets.add(
       Icon(
@@ -407,7 +412,7 @@ class GenreChipView extends StatelessWidget {
 class MovieDetailsSliverAppBarView extends StatelessWidget {
   final Function onTapBack;
 
-  final MovieVO mMovie;
+  final MovieVO? mMovie;
 
   MovieDetailsSliverAppBarView(this.onTapBack, this.mMovie);
 
@@ -424,7 +429,7 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
             background: Stack(
               children: [
                 Positioned.fill(
-                  child: MovieDetailsAppBarImageView(mMovie.posterPath),
+                  child: MovieDetailsAppBarImageView(mMovie?.posterPath ?? ""),
                 ),
                 Positioned.fill(
                   child: GradientView(),
@@ -459,7 +464,9 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
                       right: MARGIN_MEDIUM_2,
                       bottom: MARGIN_LARGE,
                     ),
-                    child: MovieDetailsAppBarInfoView(mMovie),
+                    child: (mMovie != null)
+                        ? MovieDetailsAppBarInfoView(mMovie!)
+                        : Container(),
                   ),
                 ),
               ],
@@ -472,7 +479,7 @@ class MovieDetailsSliverAppBarView extends StatelessWidget {
 }
 
 class MovieDetailsAppBarInfoView extends StatelessWidget {
-  final MovieVO mMovie;
+  final MovieVO? mMovie;
 
   MovieDetailsAppBarInfoView(this.mMovie);
 
@@ -484,7 +491,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
       children: [
         Row(
           children: [
-            MovieDetailsYearView(mMovie.releaseDate.substring(0, 4)),
+            MovieDetailsYearView(mMovie?.releaseDate?.substring(0, 4) ?? ""),
             Spacer(),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -497,7 +504,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
                     SizedBox(
                       height: MARGIN_SMALL,
                     ),
-                    TitleText("${mMovie.voteCount} VOTES"),
+                    TitleText("${mMovie?.voteCount} VOTES"),
                     SizedBox(
                       height: MARGIN_CARD_MEDIUM_2,
                     ),
@@ -505,7 +512,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
                 ),
                 SizedBox(width: MARGIN_MEDIUM),
                 Text(
-                  "${mMovie.voteAverage}",
+                  "${mMovie?.voteAverage}",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: MOVIE_DETAILS_RATING_TEXT_SIZE,
@@ -517,7 +524,7 @@ class MovieDetailsAppBarInfoView extends StatelessWidget {
         ),
         SizedBox(height: MARGIN_MEDIUM),
         Text(
-          mMovie.title,
+          mMovie?.title ?? "",
           style: TextStyle(
             color: Colors.white,
             fontSize: TEXT_HEADING_2X,
@@ -559,10 +566,6 @@ class MovieDetailsYearView extends StatelessWidget {
 }
 
 class SearchButtonView extends StatelessWidget {
-  const SearchButtonView({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Icon(

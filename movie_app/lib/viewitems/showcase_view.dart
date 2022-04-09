@@ -6,7 +6,7 @@ import 'package:movie_app/widgets/play_button_view.dart';
 import 'package:movie_app/widgets/title_text.dart';
 
 class ShowCaseView extends StatelessWidget {
-  final MovieVO mShowCaseMovie;
+  final MovieVO? mShowCaseMovie;
 
   ShowCaseView(this.mShowCaseMovie);
 
@@ -19,7 +19,7 @@ class ShowCaseView extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.network(
-              "$IMAGE_BASE_URL${mShowCaseMovie.posterPath}",
+              "$IMAGE_BASE_URL${mShowCaseMovie?.posterPath}",
               fit: BoxFit.cover,
             ),
           ),
@@ -36,7 +36,7 @@ class ShowCaseView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    mShowCaseMovie.title,
+                    mShowCaseMovie?.title ?? "",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: TEXT_REGULAR_3X,
@@ -44,7 +44,7 @@ class ShowCaseView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: MARGIN_MEDIUM),
-                  TitleText(mShowCaseMovie.releaseDate)
+                  TitleText(mShowCaseMovie?.releaseDate ?? "")
                 ],
               ),
             ),

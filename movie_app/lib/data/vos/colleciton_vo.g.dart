@@ -17,10 +17,10 @@ class CollectionVOAdapter extends TypeAdapter<CollectionVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CollectionVO(
-      fields[0] as int,
-      fields[1] as String,
-      fields[2] as String,
-      fields[3] as String,
+      fields[0] as int?,
+      fields[1] as String?,
+      fields[2] as String?,
+      fields[3] as String?,
     );
   }
 
@@ -53,14 +53,12 @@ class CollectionVOAdapter extends TypeAdapter<CollectionVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-CollectionVO _$CollectionVOFromJson(Map<String, dynamic> json) {
-  return CollectionVO(
-    json['id'] as int,
-    json['name'] as String,
-    json['poster_path'] as String,
-    json['backdrop_path'] as String,
-  );
-}
+CollectionVO _$CollectionVOFromJson(Map<String, dynamic> json) => CollectionVO(
+      json['id'] as int?,
+      json['name'] as String?,
+      json['poster_path'] as String?,
+      json['backdrop_path'] as String?,
+    );
 
 Map<String, dynamic> _$CollectionVOToJson(CollectionVO instance) =>
     <String, dynamic>{

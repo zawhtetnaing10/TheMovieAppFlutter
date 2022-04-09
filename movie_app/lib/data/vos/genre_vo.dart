@@ -9,11 +9,11 @@ part 'genre_vo.g.dart';
 class GenreVO {
   @JsonKey(name: "id")
   @HiveField(0)
-  int id;
+  int? id;
 
   @JsonKey(name: "name")
   @HiveField(1)
-  String name;
+  String? name;
 
   GenreVO({this.id, this.name});
 

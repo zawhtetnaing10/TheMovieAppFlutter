@@ -17,8 +17,8 @@ class ProductionCountryVOAdapter extends TypeAdapter<ProductionCountryVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProductionCountryVO(
-      fields[0] as String,
-      fields[1] as String,
+      fields[0] as String?,
+      fields[1] as String?,
     );
   }
 
@@ -47,12 +47,11 @@ class ProductionCountryVOAdapter extends TypeAdapter<ProductionCountryVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProductionCountryVO _$ProductionCountryVOFromJson(Map<String, dynamic> json) {
-  return ProductionCountryVO(
-    json['iso_3166_1'] as String,
-    json['name'] as String,
-  );
-}
+ProductionCountryVO _$ProductionCountryVOFromJson(Map<String, dynamic> json) =>
+    ProductionCountryVO(
+      json['iso_3166_1'] as String?,
+      json['name'] as String?,
+    );
 
 Map<String, dynamic> _$ProductionCountryVOToJson(
         ProductionCountryVO instance) =>

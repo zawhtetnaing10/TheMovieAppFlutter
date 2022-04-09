@@ -17,8 +17,8 @@ class BaseActorVOAdapter extends TypeAdapter<BaseActorVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return BaseActorVO(
-      fields[10] as String,
-      fields[11] as String,
+      fields[10] as String?,
+      fields[11] as String?,
     );
   }
 
@@ -47,12 +47,10 @@ class BaseActorVOAdapter extends TypeAdapter<BaseActorVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-BaseActorVO _$BaseActorVOFromJson(Map<String, dynamic> json) {
-  return BaseActorVO(
-    json['name'] as String,
-    json['profile_path'] as String,
-  );
-}
+BaseActorVO _$BaseActorVOFromJson(Map<String, dynamic> json) => BaseActorVO(
+      json['name'] as String?,
+      json['profile_path'] as String?,
+    );
 
 Map<String, dynamic> _$BaseActorVOToJson(BaseActorVO instance) =>
     <String, dynamic>{

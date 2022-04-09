@@ -17,10 +17,10 @@ class ProductionCompanyVOAdapter extends TypeAdapter<ProductionCompanyVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProductionCompanyVO(
-      fields[0] as int,
-      fields[1] as String,
-      fields[2] as String,
-      fields[3] as String,
+      fields[0] as int?,
+      fields[1] as String?,
+      fields[2] as String?,
+      fields[3] as String?,
     );
   }
 
@@ -53,14 +53,13 @@ class ProductionCompanyVOAdapter extends TypeAdapter<ProductionCompanyVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProductionCompanyVO _$ProductionCompanyVOFromJson(Map<String, dynamic> json) {
-  return ProductionCompanyVO(
-    json['id'] as int,
-    json['logo_path'] as String,
-    json['name'] as String,
-    json['origin_country'] as String,
-  );
-}
+ProductionCompanyVO _$ProductionCompanyVOFromJson(Map<String, dynamic> json) =>
+    ProductionCompanyVO(
+      json['id'] as int?,
+      json['logo_path'] as String?,
+      json['name'] as String?,
+      json['origin_country'] as String?,
+    );
 
 Map<String, dynamic> _$ProductionCompanyVOToJson(
         ProductionCompanyVO instance) =>

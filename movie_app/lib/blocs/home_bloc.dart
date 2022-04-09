@@ -39,7 +39,7 @@ class HomeBloc {
       mGenreListStreamController.sink.add(genreList);
 
       /// Movies By Genre
-      getMoviesByGenreAndRefresh(genreList.first.id);
+      getMoviesByGenreAndRefresh(genreList?.first.id ?? 0);
     }).catchError((error) {});
 
     /// Genres Database
@@ -47,7 +47,7 @@ class HomeBloc {
       mGenreListStreamController.sink.add(genreList);
 
       /// Movies By Genre
-      getMoviesByGenreAndRefresh(genreList.first.id);
+      getMoviesByGenreAndRefresh(genreList?.first.id ?? 0);
     }).catchError((error) {});
 
     /// Showcases Database

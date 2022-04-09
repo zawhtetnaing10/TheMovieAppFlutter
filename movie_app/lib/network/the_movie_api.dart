@@ -14,48 +14,48 @@ abstract class TheMovieApi {
   factory TheMovieApi(Dio dio) = _TheMovieApi;
 
   @GET(ENDPOINT_GET_NOW_PLAYING)
-  Future<MovieListResponse> getNowPlayingMovies(
+  Future<MovieListResponse?> getNowPlayingMovies(
     @Query(PARAM_API_KEY) String apiKey,
     @Query(PARAM_LANGUAGE) String language,
     @Query(PARAM_PAGE) String page,
   );
 
   @GET(ENDPOINT_GET_POPULAR)
-  Future<MovieListResponse> getPopularMovies(
+  Future<MovieListResponse?> getPopularMovies(
     @Query(PARAM_API_KEY) String apiKey,
     @Query(PARAM_LANGUAGE) String language,
     @Query(PARAM_PAGE) String page,
   );
 
   @GET(ENDPOINT_GET_TOP_RATED)
-  Future<MovieListResponse> getTopRatedMovies(
+  Future<MovieListResponse?> getTopRatedMovies(
     @Query(PARAM_API_KEY) String apiKey,
     @Query(PARAM_LANGUAGE) String language,
     @Query(PARAM_PAGE) String page,
   );
 
   @GET(ENDPOINT_GET_GENRES)
-  Future<GetGenresResponse> getGenres(
+  Future<GetGenresResponse?> getGenres(
     @Query(PARAM_API_KEY) String apiKey,
     @Query(PARAM_LANGUAGE) String language,
   );
 
   @GET(ENDPOINT_GET_MOVIES_BY_GENRE)
-  Future<MovieListResponse> getMoviesByGenre(
+  Future<MovieListResponse?> getMoviesByGenre(
     @Query(PARAM_GENRE_ID) String genreId,
     @Query(PARAM_API_KEY) String apiKey,
     @Query(PARAM_LANGUAGE) String language,
   );
 
   @GET(ENDPOINT_GET_ACTORS)
-  Future<GetActorsResponse> getActors(
+  Future<GetActorsResponse?> getActors(
     @Query(PARAM_API_KEY) String apiKey,
     @Query(PARAM_LANGUAGE) String language,
     @Query(PARAM_PAGE) String page,
   );
 
   @GET("$ENDPOINT_GET_MOVIE_DETAILS/{movie_id}")
-  Future<MovieVO> getMovieDetails(
+  Future<MovieVO?> getMovieDetails(
     @Path("movie_id") String movieId,
     @Query(PARAM_API_KEY) String apiKey,
     @Query(PARAM_LANGUAGE) String language,
@@ -63,7 +63,7 @@ abstract class TheMovieApi {
   );
 
   @GET("$ENDPOINT_GET_CREDITS_BY_MOVIE/{movie_id}/credits")
-  Future<GetCreditsByMovieResponse> getCreditsByMovieResponse(
+  Future<GetCreditsByMovieResponse?> getCreditsByMovieResponse(
     @Path("movie_id") String movieId,
     @Query(PARAM_API_KEY) String apiKey,
     @Query(PARAM_LANGUAGE) String language,

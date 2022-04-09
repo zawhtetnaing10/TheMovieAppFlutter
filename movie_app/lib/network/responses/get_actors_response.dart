@@ -6,11 +6,11 @@ part 'get_actors_response.g.dart';
 @JsonSerializable()
 class GetActorsResponse {
   @JsonKey(name: 'code')
-  int code;
+  int? code;
   @JsonKey(name: 'message')
-  String message;
+  String? message;
   @JsonKey(name: 'results')
-  List<ActorVO> results;
+  List<ActorVO>? results;
 
   GetActorsResponse({this.results});
 

@@ -10,16 +10,16 @@ part 'colleciton_vo.g.dart';
 class CollectionVO {
   @JsonKey(name: "id")
   @HiveField(0)
-  int id;
+  int? id;
   @JsonKey(name: "name")
   @HiveField(1)
-  String name;
+  String? name;
   @JsonKey(name: "poster_path")
   @HiveField(2)
-  String posterPath;
+  String? posterPath;
   @JsonKey(name: "backdrop_path")
   @HiveField(3)
-  String backDropPath;
+  String? backDropPath;
 
   CollectionVO(this.id, this.name, this.posterPath, this.backDropPath);
 

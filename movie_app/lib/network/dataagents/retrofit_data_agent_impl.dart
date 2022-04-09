@@ -8,7 +8,7 @@ import 'package:movie_app/network/dataagents/movie_data_agent.dart';
 import 'package:movie_app/network/the_movie_api.dart';
 
 class RetrofitDataAgentImpl extends MovieDataAgent {
-  TheMovieApi mApi;
+  late TheMovieApi mApi;
 
   static final RetrofitDataAgentImpl _singleton =
       RetrofitDataAgentImpl._internal();
@@ -27,7 +27,7 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
     return mApi
         .getNowPlayingMovies(API_KEY, LANGUAGE_EN_US, page.toString())
         .asStream()
-        .map((response) => response.results)
+        .map((response) => response?.results ?? [])
         .first;
   }
 
@@ -36,7 +36,7 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
     return mApi
         .getPopularMovies(API_KEY, LANGUAGE_EN_US, page.toString())
         .asStream()
-        .map((response) => response.results)
+        .map((response) => response?.results ?? [])
         .first;
   }
 
@@ -45,7 +45,7 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
     return mApi
         .getTopRatedMovies(API_KEY, LANGUAGE_EN_US, page.toString())
         .asStream()
-        .map((response) => response.results)
+        .map((response) => response?.results ?? [])
         .first;
   }
 
@@ -54,7 +54,7 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
     return mApi
         .getGenres(API_KEY, LANGUAGE_EN_US)
         .asStream()
-        .map((response) => response.genres)
+        .map((response) => response?.genres ?? [])
         .first;
   }
 
@@ -67,7 +67,7 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
           LANGUAGE_EN_US,
         )
         .asStream()
-        .map((response) => response.results)
+        .map((response) => response?.results ?? [])
         .first;
   }
 
@@ -76,7 +76,7 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
     return mApi
         .getActors(API_KEY, LANGUAGE_EN_US, page.toString())
         .asStream()
-        .map((response) => response.results)
+        .map((response) => response?.results ?? [])
         .first;
   }
 
@@ -86,13 +86,15 @@ class RetrofitDataAgentImpl extends MovieDataAgent {
         .getCreditsByMovieResponse(
             movieId.toString(), API_KEY, LANGUAGE_EN_US, 1.toString())
         .asStream()
-        .map((response) => response.cast)
+        .map((response) => response?.cast ?? [])
         .first;
   }
 
   @override
   Future<MovieVO> getMovieDetails(int movieId) {
-    return mApi.getMovieDetails(
-        movieId.toString(), API_KEY, LANGUAGE_EN_US, 1.toString());
+    return mApi
+        .getMovieDetails(
+            movieId.toString(), API_KEY, LANGUAGE_EN_US, 1.toString())
+        .then((response) => response!);
   }
 }

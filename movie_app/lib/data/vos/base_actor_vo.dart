@@ -9,11 +9,11 @@ part 'base_actor_vo.g.dart';
 class BaseActorVO {
   @JsonKey(name: "name")
   @HiveField(10)
-  String name;
+  String? name;
 
   @JsonKey(name: "profile_path")
   @HiveField(11)
-  String profilePath;
+  String? profilePath;
 
   BaseActorVO(this.name, this.profilePath);
 

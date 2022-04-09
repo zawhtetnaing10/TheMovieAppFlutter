@@ -17,18 +17,18 @@ class CreditVOAdapter extends TypeAdapter<CreditVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CreditVO(
-      fields[0] as bool,
-      fields[1] as int,
-      fields[2] as int,
-      fields[3] as String,
-      fields[4] as String,
-      fields[5] as double,
-      fields[6] as int,
-      fields[7] as String,
-      fields[8] as String,
-      fields[9] as int,
-      fields[10] as String,
-      fields[11] as String,
+      fields[0] as bool?,
+      fields[1] as int?,
+      fields[2] as int?,
+      fields[3] as String?,
+      fields[4] as String?,
+      fields[5] as double?,
+      fields[6] as int?,
+      fields[7] as String?,
+      fields[8] as String?,
+      fields[9] as int?,
+      fields[10] as String?,
+      fields[11] as String?,
     );
   }
 
@@ -77,22 +77,20 @@ class CreditVOAdapter extends TypeAdapter<CreditVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-CreditVO _$CreditVOFromJson(Map<String, dynamic> json) {
-  return CreditVO(
-    json['adult'] as bool,
-    json['gender'] as int,
-    json['id'] as int,
-    json['known_for_department'] as String,
-    json['original_name'] as String,
-    (json['popularity'] as num)?.toDouble(),
-    json['cast_id'] as int,
-    json['character'] as String,
-    json['credit_id'] as String,
-    json['order'] as int,
-    json['name'] as String,
-    json['profile_path'] as String,
-  );
-}
+CreditVO _$CreditVOFromJson(Map<String, dynamic> json) => CreditVO(
+      json['adult'] as bool?,
+      json['gender'] as int?,
+      json['id'] as int?,
+      json['known_for_department'] as String?,
+      json['original_name'] as String?,
+      (json['popularity'] as num?)?.toDouble(),
+      json['cast_id'] as int?,
+      json['character'] as String?,
+      json['credit_id'] as String?,
+      json['order'] as int?,
+      json['name'] as String,
+      json['profile_path'] as String?,
+    );
 
 Map<String, dynamic> _$CreditVOToJson(CreditVO instance) => <String, dynamic>{
       'name': instance.name,
